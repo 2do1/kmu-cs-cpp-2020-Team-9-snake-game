@@ -1,6 +1,6 @@
 # kmu-cs-cpp-2020-Team-9-snake-game
 
-### [0] pseudo-code
+## pseudo-code
 ```
 int main(void){
   while(게임 종료 안되면){
