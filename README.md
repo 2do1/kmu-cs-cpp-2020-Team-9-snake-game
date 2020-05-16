@@ -1,4 +1,5 @@
 # kmu-cs-cpp-2020-Team-9-snake-game
+C++을 이용한 Snake game 제작
 
 ## pseudo-code
 ```
