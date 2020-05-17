@@ -3,6 +3,7 @@
 #include <time.h>
 int xo=15;
 int yo=15;
+WINDOW *win1;
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen();          // 게임화면
 void reset();               // stage1
@@ -13,12 +14,15 @@ int main()
   startScreen();
   reset();
   GameScreen();
+  printmap(30,30);
 
   while(true){
-    printw("a");
+
     keyinput();
     reset();
     GameScreen();
+
+
   }
 
   return 0;
@@ -86,13 +90,25 @@ void GameScreen(){
   //endwin();
 }
 void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으롷
-  WINDOW *win1;
+
   initscr();
   //printmap(32,32);
   win1 = newwin(32,32,5,5);
+  //mvwprintw(win1,yo,xo,"O");
   wbkgd(win1,COLOR_PAIR(1));
   wattron(win1,COLOR_PAIR(1));
   //mvwprintw(win1,15,12,"STAGE 1");
+
+  for(int i=0;i<30;i++){
+    for(int j=0;j<30;j++){
+
+      if ((i==yo)&&(j==xo)){
+        mvwprintw(win1,yo,xo,"O"); //snake!
+      }
+    }
+  }
+
+
   wborder(win1,'W','W','W','W','X','X','X','X');
   wrefresh(win1);
 
@@ -105,6 +121,8 @@ void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으
 
 void printmap(int x, int y){
 
+  mvwprintw(win1,yo,xo,"O");
+
   int map[x][y]={0,};   // 우선 map 의 모든 값을 0으로 설정한다.
 
   map[0][0]=2;     // immune wall 의 값을 2로 지정
@@ -112,7 +130,7 @@ void printmap(int x, int y){
   map[x-1][0]=2;
   map[x-1][y-1]=2;
 
-  map[x/2][y/2]=3;      // 뱀 머리는 3이라는 값으로 설정
+  map[10][10]=3;      // 뱀 머리는 3이라는 값으로 설정
                         // 뱀 몸, 뱀 꼬리도 4,5 라는 값으로 설정해주면 된다.
 
   for(int i=1;i<y-1;i++){    // 위쪽 wall의 값을 1로 지정
@@ -130,21 +148,11 @@ void printmap(int x, int y){
 
   for(int i=0;i<y;i++){
     for(int j=0;j<x;j++){
-      if(map[i][j]==2){
-                    // immune wall은 'X'
-        printw("X");
-      }
-      else if (map[i][j]==3){
-        printw("O"); //snake!
-      }
-      else if(map[i][j]==1){        // WALL은 'W'
-        printw("W");
-      }
-      else if(map[i][j]==0){        // 빈 공간
-        printw(" ");
+
+      if ((i==yo)&&(j==xo)){
+        mvwprintw(win1,yo,xo,"O"); //snake!
       }
     }
-  printw("\n");
   }
 }
 
@@ -152,19 +160,19 @@ void keyinput(){
 
   int key = getch();
   switch(key){
-    case 72://up
+    case 'a'://up
       yo--;
       break;
 
-    case 75://left
+    case 'w'://left
       xo--;
       break;
 
-    case 77://right
+    case 'd'://right
       xo++;
       break;
 
-    case 80: //down
+    case 's': //down
       yo++;
       break;
 
