@@ -3,6 +3,8 @@
 #include <time.h>
 int xo=15;
 int yo=15;
+bool gameOver=false;
+
 WINDOW *win1;
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen();          // 게임화면
@@ -16,7 +18,7 @@ int main()
   GameScreen();
   printmap(30,30);
 
-  while(true){
+  while(!gameOver){
 
     keyinput();
     reset();
@@ -24,6 +26,7 @@ int main()
 
 
   }
+  endwin();
 
   return 0;
 }
@@ -92,7 +95,6 @@ void GameScreen(){
 void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으롷
 
   initscr();
-  //printmap(32,32);
   win1 = newwin(32,32,5,5);
   //mvwprintw(win1,yo,xo,"O");
   wbkgd(win1,COLOR_PAIR(1));
@@ -159,12 +161,13 @@ void printmap(int x, int y){
 void keyinput(){
 
   int key = getch();
+
   switch(key){
-    case 'a'://up
+    case 'w'://up
       yo--;
       break;
 
-    case 'w'://left
+    case 'a'://left
       xo--;
       break;
 
@@ -178,5 +181,11 @@ void keyinput(){
 
     default:
       break;
+    }
+
+    if (xo >= 30 || xo <= 0 || yo >= 30 || yo <= 0 ){
+      gameOver = true;
+
   }
+
 }
