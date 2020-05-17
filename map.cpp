@@ -5,7 +5,7 @@ using namespace std;
 void printmap(int x, int y);
 int main()
 {
-printmap(30,30);
+printmap(32,32);             // 벽 제외 순수 map 만 (30 x 30) 이므로
 return 0;
 }
 void printmap(int x, int y){
