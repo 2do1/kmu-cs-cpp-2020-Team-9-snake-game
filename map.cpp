@@ -32,8 +32,7 @@ void printmap(int x, int y){
   for(int i=0;i<y;i++){
     for(int j=0;j<x;j++){
       if(map[i][j]==2){              // immune wall은 'X'
-        cout<<"X"<
-        ;
+        cout<<"X";
       }
       else if(map[i][j]==1){        // WALL은 'W'
         cout << "W";
