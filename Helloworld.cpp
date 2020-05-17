@@ -1,17 +1,27 @@
 #include <iostream>
 #include <ncurses.h>
 #include <time.h>
-int xo,yo;
+int xo=15;
+int yo=15;
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen();          // 게임화면
 void reset();               // stage1
 void printmap(int x,int y);
-
+void keyinput();
 int main()
 {
   startScreen();
   reset();
   GameScreen();
+
+  while(true){
+
+    printw("a");
+    keyinput();
+    reset();
+    GameScreen();
+  }
+
   return 0;
 }
 void startScreen(){
@@ -69,11 +79,12 @@ void GameScreen(){
   wborder(win3,'|','|','-','-','X','X','X','X');
   wrefresh(win3);
 
-  getch();
+  //getch();
+  curs_set(0);
 
   delwin(win2);
   delwin(win3);
-  endwin();
+  //endwin();
 }
 void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으롷
   WINDOW *win1;
@@ -82,14 +93,19 @@ void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으
   win1 = newwin(32,32,5,5);
   wbkgd(win1,COLOR_PAIR(1));
   wattron(win1,COLOR_PAIR(1));
-  mvwprintw(win1,15,12,"STAGE 1");
+  //mvwprintw(win1,15,12,"STAGE 1");
   wborder(win1,'W','W','W','W','X','X','X','X');
   wrefresh(win1);
-  getch();
+
+  keypad(stdscr,TRUE);
+  noecho();
+  curs_set(0);
+  //getch();
   delwin(win1);
 }
 
 void printmap(int x, int y){
+
   int map[x][y]={0,};   // 우선 map 의 모든 값을 0으로 설정한다.
 
   map[0][0]=2;     // immune wall 의 값을 2로 지정
