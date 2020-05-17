@@ -15,7 +15,6 @@ int main()
   GameScreen();
 
   while(true){
-
     printw("a");
     keyinput();
     reset();
@@ -113,6 +112,9 @@ void printmap(int x, int y){
   map[x-1][0]=2;
   map[x-1][y-1]=2;
 
+  map[x/2][y/2]=3;      // 뱀 머리는 3이라는 값으로 설정
+                        // 뱀 몸, 뱀 꼬리도 4,5 라는 값으로 설정해주면 된다.
+
   for(int i=1;i<y-1;i++){    // 위쪽 wall의 값을 1로 지정
     map[0][i]=1;
   }
@@ -132,7 +134,7 @@ void printmap(int x, int y){
                     // immune wall은 'X'
         printw("X");
       }
-      if (i==yo && j==xo){
+      else if (map[i][j]==3){
         printw("O"); //snake!
       }
       else if(map[i][j]==1){        // WALL은 'W'
