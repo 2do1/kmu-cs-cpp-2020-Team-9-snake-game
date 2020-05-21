@@ -1,3 +1,5 @@
+//커밋 
+
 #include <iostream>
 #include <ncurses.h>
 #include <time.h>
@@ -123,3 +125,4 @@ void printmap(int x, int y){
   printw("\n");
   }
 }
+
