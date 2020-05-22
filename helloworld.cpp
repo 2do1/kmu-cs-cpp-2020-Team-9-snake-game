@@ -1,18 +1,38 @@
-//커밋 
-
 #include <iostream>
 #include <ncurses.h>
 #include <time.h>
-
+#include<unistd.h>
+int xo=15;
+int yo=15;
+bool gameOver=false;
+int bodyX[30] = {0} , bodyY[30] = {0};
+int body_len = 3;
+char opposition_key = ' ' ;
+WINDOW *win1;
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen();          // 게임화면
 void reset();               // stage1
 void printmap(int x,int y);
-
+void keyinput();
 int main()
 {
   startScreen();
+  reset();
   GameScreen();
+  printmap(30,30);
+
+
+  while(!gameOver){
+      keyinput();  //xo, yo 값 바꿔줌, body위치 재설정
+      reset();
+      GameScreen();
+
+
+  }
+  mvwprintw(win1,15, 11, "Game Over");
+  getch();  // 반대키를 누르자마자 꺼지면 조금 그래서 키 한번 더누르면 게임종료.
+  endwin();
+
   return 0;
 }
 void startScreen(){
@@ -28,8 +48,10 @@ void startScreen(){
   mvprintw(16,33,"  ESC : Quit        ");
   refresh();
   getch();
+  clear();
   endwin();
 }
+
 void GameScreen(){
   initscr();
   reset();                 // 게임 화면
@@ -40,7 +62,7 @@ void GameScreen(){
   init_pair(1, COLOR_GREEN,COLOR_WHITE);
   init_pair(2, COLOR_GREEN,COLOR_WHITE);
 
-  win2 = newwin(13,40,1,40);
+  win2 = newwin(13,40,5,40);
   wbkgd(win2,COLOR_PAIR(1));
   wattron(win2,COLOR_PAIR(1));
   mvwprintw(win2,1,1,"SCORE-BOARD");
@@ -54,7 +76,7 @@ void GameScreen(){
 
   wrefresh(win2);
 
-  win3 = newwin(13,40,15,40);
+  win3 = newwin(13,40,20,40);
   wbkgd(win3,COLOR_PAIR(1));
   wattron(win3,COLOR_PAIR(1));
   mvwprintw(win3,1,1,"MISSION");
@@ -68,33 +90,63 @@ void GameScreen(){
   wborder(win3,'|','|','-','-','X','X','X','X');
   wrefresh(win3);
 
-  getch();
+  //getch();
+  curs_set(0);
 
   delwin(win2);
   delwin(win3);
-  endwin();
+  //endwin();
 }
 void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으롷
-  WINDOW *win1;
+
   initscr();
-  //printmap(32,32);
-  win1 = newwin(32,32,1,1);
+  win1 = newwin(32,32,5,5);
+  //mvwprintw(win1,yo,xo,"O");
   wbkgd(win1,COLOR_PAIR(1));
   wattron(win1,COLOR_PAIR(1));
-  mvwprintw(win1,15,12,"STAGE 1");
+  //mvwprintw(win1,15,12,"STAGE 1");
+
+  for(int i=0;i<30;i++){
+    for(int j=0;j<30;j++){
+
+      if ((i==yo)&&(j==xo)){
+        mvwprintw(win1,i,j,"O"); //snake!
+      }
+      else{
+        for(int k = 0; k<body_len; k++){
+
+          if(bodyX[k] == j && bodyY[k] == i){
+            mvwprintw(win1, i, j, "o");
+          }
+        }
+      }
+    }
+  }
+
+
   wborder(win1,'W','W','W','W','X','X','X','X');
   wrefresh(win1);
-  getch();
+
+  keypad(stdscr,TRUE);
+  noecho();
+  curs_set(0);
+  //getch();
   delwin(win1);
 }
 
 void printmap(int x, int y){
+
+  mvwprintw(win1,yo,xo,"O");
+
   int map[x][y]={0,};   // 우선 map 의 모든 값을 0으로 설정한다.
 
   map[0][0]=2;     // immune wall 의 값을 2로 지정
   map[0][y-1]=2;
   map[x-1][0]=2;
   map[x-1][y-1]=2;
+
+  map[xo][yo]=3;      // 뱀 머리는 3이라는 값으로 설정
+                        // 뱀 몸, 뱀 꼬리도 4,5 라는 값으로 설정해주면 된다.
 
   for(int i=1;i<y-1;i++){    // 위쪽 wall의 값을 1로 지정
     map[0][i]=1;
@@ -109,20 +161,69 @@ void printmap(int x, int y){
     map[x-1][i]=1;
   }
 
-  for(int i=0;i<y;i++){
-    for(int j=0;j<x;j++){
-      if(map[i][j]==2){
-                    // immune wall은 'X'
-        printw("X");
-      }
-      else if(map[i][j]==1){        // WALL은 'W'
-        printw("W");
-      }
-      else if(map[i][j]==0){        // 빈 공간
-        printw(" ");
-      }
-    }
-  printw("\n");
-  }
+
 }
 
+void keyinput(){
+
+  int tmpX = bodyX[0];
+  int tmpY = bodyY[0];
+  int tmp2X, tmp2Y;
+  bodyX[0] = xo;
+  bodyY[0] = yo;
+  bodyX[1] = xo+1;
+  bodyY[1] = yo;
+  bodyX[2] = xo+2;
+  bodyY[2] = yo;
+
+
+  for(int i = 1; i<body_len-1; i++){
+    tmp2X = bodyX[i];
+    tmp2Y = bodyY[i];
+    bodyX[i] = tmpX;
+    bodyY[i] = tmpY;
+    tmpX = tmp2X;
+    tmpY = tmp2Y;
+  }
+  char key = getch();
+  if (opposition_key == key){  // 현재 입력 받은 키와 전에 입력받은 키의 반대키가 같으면 게임종료.
+    gameOver = true;
+    std:: cout << "Game Over"; // 이거를 윈도우에 띄우면 좋을
+
+  }
+  else{
+    switch(key){
+
+
+      case 'w'://up
+        yo--;
+        opposition_key = 's';  //opposition_key 재설정
+        break;
+
+      case 'a'://left
+        xo--;
+        opposition_key = 'd';
+        break;
+
+      case 'd'://right
+        xo++;
+        opposition_key = 'a';
+        break;
+
+      case 's': //down
+        yo++;
+        opposition_key = 'w';
+        break;
+
+      default:
+        break;
+
+
+
+      if (xo >= 30 || xo <= 0 || yo >= 30 || yo <= 0 ){
+      gameOver = true;
+      }
+    }
+  }
+
+}
