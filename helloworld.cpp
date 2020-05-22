@@ -20,6 +20,10 @@ int main()
   reset();
   GameScreen();
   printmap(30,30);
+  bodyX[1] = xo+1;
+  bodyY[1] = yo;
+  bodyX[2] = xo+2;
+  bodyY[2] = yo;
 
 
   while(!gameOver){
@@ -116,7 +120,12 @@ void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으
         for(int k = 0; k<body_len; k++){
 
           if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "o");
+            if(k == 1){
+              mvwprintw(win1, i, j, "1");
+            }
+            if(k == 2){
+              mvwprintw(win1, i, j, "2");
+            }
           }
         }
       }
@@ -171,59 +180,56 @@ void keyinput(){
   int tmp2X, tmp2Y;
   bodyX[0] = xo;
   bodyY[0] = yo;
-  bodyX[1] = xo+1;
-  bodyY[1] = yo;
-  bodyX[2] = xo+2;
-  bodyY[2] = yo;
 
-
-  for(int i = 1; i<body_len-1; i++){
-    tmp2X = bodyX[i];
-    tmp2Y = bodyY[i];
-    bodyX[i] = tmpX;
-    bodyY[i] = tmpY;
-    tmpX = tmp2X;
-    tmpY = tmp2Y;
-  }
   char key = getch();
-  if (opposition_key == key){  // 현재 입력 받은 키와 전에 입력받은 키의 반대키가 같으면 게임종료.
-    gameOver = true;
-    std:: cout << "Game Over"; // 이거를 윈도우에 띄우면 좋을
-
-  }
-  else{
-    switch(key){
-
-
-      case 'w'://up
-        yo--;
-        opposition_key = 's';  //opposition_key 재설정
-        break;
-
-      case 'a'://left
-        xo--;
-        opposition_key = 'd';
-        break;
-
-      case 'd'://right
-        xo++;
-        opposition_key = 'a';
-        break;
-
-      case 's': //down
-        yo++;
-        opposition_key = 'w';
-        break;
-
-      default:
-        break;
+  if(key =='w' || key =='a' || key =='s'||key =='d'){
+    for(int i = 0; i<body_len; i++){
+      tmp2X = bodyX[i];
+      tmp2Y = bodyY[i];
+      bodyX[i] = tmpX;
+      bodyY[i] = tmpY;
+      tmpX = tmp2X;
+      tmpY = tmp2Y;
+      }
 
 
-
-      if (xo >= 30 || xo <= 0 || yo >= 30 || yo <= 0 ){
+    if (opposition_key == key){  // 현재 입력 받은 키와 전에 입력받은 키의 반대키가 같으면 게임종료.
       gameOver = true;
+      std:: cout << "Game Over"; // 이거를 윈도우에 띄우면 좋을
+    
+    }
+    else{
+      switch(key){
+
+        case 'w'://up
+          yo--;
+          opposition_key = 's';  //opposition_key 재설정
+          break;
+
+        case 'a'://left
+          xo--;
+          opposition_key = 'd';
+          break;
+
+        case 'd'://right
+          xo++;
+          opposition_key = 'a';
+          break;
+
+        case 's': //down
+          yo++;
+          opposition_key = 'w';
+          break;
+
+        default:
+          break;
+
+
+
+        if (xo >= 30 || xo <= 0 || yo >= 30 || yo <= 0 ){
+          gameOver = true;
+        }
       }
     }
   }
-
 }
