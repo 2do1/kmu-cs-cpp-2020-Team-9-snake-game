@@ -38,9 +38,10 @@ int main(void){
 ## conference 02
 ```
 채환,도원 -> 틱 및 수정사항 구현
-소현,정엽 -> growth, position, gate 발생 구현
-채환, 도원 -> gate 발생 시킨 코드 받아서 뱀 움직임 구현하기
-소현, 정엽 -> 이후로는 ncurse, growth,position  자유롭게 구현하고 있기
+소현,정엽 -> Ncurse / UI 구현
+채환, 도원 -> growth, position, gate 뱀 움직임 구현하기
+소현, 정엽 -> score 구현하고 있기
+
 
 그러다가 어느정도 되면 다시 회의하고 서로 분량 조절!
 ```
