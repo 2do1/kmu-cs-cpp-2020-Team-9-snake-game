@@ -34,3 +34,8 @@ int main(void){
   4. 21 x 21 ( Wall 구현)
 
 ```
+
+## conference 02
+```
+https://kookmin.zoom.us/j/95604508256
+```
