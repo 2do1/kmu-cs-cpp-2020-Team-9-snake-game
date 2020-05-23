@@ -6,35 +6,45 @@ int xo=15;
 int yo=15;
 bool gameOver=false;
 int bodyX[30] = {0} , bodyY[30] = {0};
-int body_len = 3;
+int body_len = 5; // 길이 5로 늘려줌
 char opposition_key = ' ' ;
+char key_input = ' ';
 WINDOW *win1;
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen();          // 게임화면
 void reset();               // stage1
 void printmap(int x,int y);
-void keyinput();
+void keyinput(char key);
 int main()
 {
   startScreen();
   reset();
   GameScreen();
   printmap(30,30);
+
+  // body 길이를 5까지로 늘림
+  // 겹치는걸 테스트하기 위해
   bodyX[1] = xo+1;
   bodyY[1] = yo;
   bodyX[2] = xo+2;
   bodyY[2] = yo;
+  bodyX[3] = xo+3;
+  bodyY[3] = yo;
+  bodyX[4] = xo+4;
+  bodyY[4] = yo;
+
+
 
 
   while(!gameOver){
-      keyinput();  //xo, yo 값 바꿔줌, body위치 재설정
+      nodelay(win1, false);
+      key_input = getch();
+      keyinput(key_input);  //xo, yo 값 바꿔줌, body위치 재설정
       reset();
       GameScreen();
-
-
   }
-  mvwprintw(win1,15, 11, "Game Over");
-  getch();  // 반대키를 누르자마자 꺼지면 조금 그래서 키 한번 더누르면 게임종료.
+  mvprintw(15, 11, "Game Over");
+  getch();
   endwin();
 
   return 0;
@@ -110,8 +120,8 @@ void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으
   wattron(win1,COLOR_PAIR(1));
   //mvwprintw(win1,15,12,"STAGE 1");
 
-  for(int i=0;i<30;i++){
-    for(int j=0;j<30;j++){
+  for(int i=0;i<31;i++){
+    for(int j=0;j<31;j++){
 
       if ((i==yo)&&(j==xo)){
         mvwprintw(win1,i,j,"O"); //snake!
@@ -123,7 +133,7 @@ void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으
             if(k == 1){
               mvwprintw(win1, i, j, "1");
             }
-            if(k == 2){
+            if(k >= 2){
               mvwprintw(win1, i, j, "2");
             }
           }
@@ -173,7 +183,7 @@ void printmap(int x, int y){
 
 }
 
-void keyinput(){
+void keyinput(char key){
 
   int tmpX = bodyX[0];
   int tmpY = bodyY[0];
@@ -181,7 +191,7 @@ void keyinput(){
   bodyX[0] = xo;
   bodyY[0] = yo;
 
-  char key = getch();
+
   if(key =='w' || key =='a' || key =='s'||key =='d'){
     for(int i = 0; i<body_len; i++){
       tmp2X = bodyX[i];
@@ -196,7 +206,7 @@ void keyinput(){
     if (opposition_key == key){  // 현재 입력 받은 키와 전에 입력받은 키의 반대키가 같으면 게임종료.
       gameOver = true;
       std:: cout << "Game Over"; // 이거를 윈도우에 띄우면 좋을
-    
+
     }
     else{
       switch(key){
@@ -224,11 +234,17 @@ void keyinput(){
         default:
           break;
 
+      }
+    }
+    if (xo >= 31 || xo <= 0 || yo >= 31 || yo <= 0 ){ // 벽 닿으면 종료
+      gameOver = true;
+    }
 
-
-        if (xo >= 30 || xo <= 0 || yo >= 30 || yo <= 0 ){
-          gameOver = true;
-        }
+    for(int i = 1; i < sizeof(bodyX) / sizeof(int); i++) // 머리와 몸이 닿으면 종료되는 코드
+    {
+      if(xo == bodyX[i] && yo == bodyY[i])
+      {
+        gameOver = true;
       }
     }
   }
