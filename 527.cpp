@@ -10,7 +10,7 @@ int bodyX[30] = {0} , bodyY[30] = {0};
 int body_len = 5; // 길이 5로 늘려줌
 char opposition_key = ' ' ;
 char key_input = ' ';
-char key_input2 = ' ';
+char key_input2 = ' ';   // 시작화면에서 q 버튼 누르는 key 받는 입력
 WINDOW *win1;
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen();          // 게임화면
@@ -18,7 +18,7 @@ void GameScreen();          // 게임화면
 //void score_board();
 
 void reset();               // stage1
-void pausebutton();
+void pausebutton();         // 게임 중 p 버튼 누르면 함수 실행
 
 void GameOver();              // GameOver 화면 윈도우에 띄우기
 void printmap(int x,int y);
@@ -42,8 +42,6 @@ int main()
   bodyY[4] = yo;
 
 
-
-
   while(!gameOver){
       nodelay(win1, false);
       key_input = getch();
@@ -52,13 +50,13 @@ int main()
       GameScreen();
   }
   //mvprintw(15, 11, "Game Over");
-  GameOver();
+  GameOver();           // 게임 오버 함수 실행
   getch();
   endwin();
 
   return 0;
 }
-void startScreen(){
+void startScreen(){     // 시작화면
   initscr();        // Curses 모드 시작
   start_color();    // Color 사용 선언
   attrset(A_BOLD);
@@ -74,11 +72,11 @@ void startScreen(){
   mvprintw(18,20,"                                                ");
   mvprintw(20,20,"-----------------W,A,S,D : Move ----------------");
   mvprintw(22,20,"------------------P : Pause---------------------");
-  mvprintw(24,20,"------------------ESC : Quit--------------------");
+  mvprintw(24,20,"------------------Q : Quit----------------------");
   key_input2 = getch();
-  if(key_input2=='q'){clear(); endwin(); exit(0);}
+  if(key_input2=='q'){clear(); endwin(); exit(0);}  // q 버튼 누르면 터미널로 돌아감.
   else{
-    if(key_input2=!'q'){
+    if(key_input2=!'q'){   // q 이외의 버튼을 누르면 게임시작.
       //refresh();
       //getch();
       clear();
@@ -113,7 +111,7 @@ void GameScreen(){
   //wrefresh(win2);
   //refresh();
   mvwprintw(win2,5,1,"Growth-Item:     ");
-  mvwprintw(win2,5,15,"%d",body_len);
+  mvwprintw(win2,5,15,"%d",body_len);          // 나중에 body_len 말고 그에 맞는 변수 넣으면 된다.
 
   mvwprintw(win2,7,1,"Poison-Item:     ");
   mvwprintw(win2,7,15,"%d",body_len);
@@ -125,12 +123,13 @@ void GameScreen(){
   mvwprintw(win2,11,10,"%d",body_len);
 
 
-
   wrefresh(win2);
 
   win3 = newwin(13,40,20,40);
   wbkgd(win3,COLOR_PAIR(2));
   wattron(win3,COLOR_PAIR(2));
+
+  //미션은 stage 마다 고정되게 줄건지 특정 범위에 따라 랜덤에서 줄건지 결정해보자.
   mvwprintw(win3,1,1,"MISSION");
   mvwprintw(win3,3,1,"B:     ");
   mvwprintw(win3,5,1,"+:     ");
@@ -144,7 +143,7 @@ void GameScreen(){
   attrset(A_BOLD);
   wbkgd(win4,COLOR_PAIR(2));
   wattron(win4,COLOR_PAIR(2));
-  mvwprintw(win4,2,33,"STAGE 1");  // stage 마다 바꾸면 된다.
+  mvwprintw(win4,2,33,"STAGE 1");  // stage 마다 출력 내용 바꾸면 된다.
   wrefresh(win4);
 
   //getch();
@@ -155,7 +154,7 @@ void GameScreen(){
   delwin(win4);
   //endwin();
 }
-void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으롷
+void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으로
 
   initscr();
   win1 = newwin(32,32,5,5);
@@ -301,30 +300,22 @@ void keyinput(char key){
   }
 }
 
-void pausebutton(){   // 수정해야 할 부분?
-  initscr();
-  char key_input3=' ';
+// 수정해야 할 부분?:p 를 누르면 단순 내용 출력이 아닌 게임이 stop 되어야 함
+void pausebutton(){
+  char key_input3=' ';       // 키 입력
   do{
   attrset(A_BOLD);
   mvprintw(22,20,"<Pause : Press ANY button TO RESUME>");
 }while(key_input3==getch());
-  reset();
+  //clear();  // 특정 줄을 지우는 법을 몰라서 이렇게 했는데, 한템포 락 걸린다..--보완할 점
+  //reset();
   return;
 }
 
-//void score_board(){
-//}
-
-  //
-  //if(key_input3==getch()){
-  //  clear();
-    //reset();
-  //  return ;
-//  }
 void GameOver(){
   clear();
   initscr();
-  WINDOW *gameover_window;   // 스코어 보드 윈도우
+  WINDOW *gameover_window;   // 게임오버  윈도우
 
   start_color();
   init_pair(1, COLOR_GREEN,COLOR_BLACK);
