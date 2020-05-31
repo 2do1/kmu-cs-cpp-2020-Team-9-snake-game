@@ -1,7 +1,44 @@
 #include <iostream>
 #include <ncurses.h>
 #include <time.h>
-#include<unistd.h>
+#include <stdlib.h>
+#include <string.h>
+#include <unistd.h>
+#include <sys/select.h>
+#include <termios.h>
+
+// 키보드 kbhit 구현 9~39 틱구현 
+struct termios orig_termios;
+
+void reset_terminal_mode()
+{
+    tcsetattr(0, TCSANOW, &orig_termios);
+}
+
+void set_conio_terminal_mode()
+{
+    struct termios new_termios;
+
+    /* take two copies - one for now, one for later */
+    tcgetattr(0, &orig_termios);
+    memcpy(&new_termios, &orig_termios, sizeof(new_termios));
+
+    /* register cleanup handler, and set the new terminal mode */
+    atexit(reset_terminal_mode);
+    cfmakeraw(&new_termios);
+    tcsetattr(0, TCSANOW, &new_termios);
+}
+
+int kbhit()
+{
+    struct timeval tv = { 0L, 0L };
+    fd_set fds;
+    FD_ZERO(&fds);
+    FD_SET(0, &fds);
+    return select(1, &fds, NULL, NULL, &tv);
+}
+// 
+
 int xo=15;
 int yo=15;
 bool gameOver=false;
@@ -33,15 +70,14 @@ int main()
   bodyX[4] = xo+4;
   bodyY[4] = yo;
 
-
-
-
   while(!gameOver){
-      nodelay(win1, false);
-      key_input = getch();
+      if(kbhit()){ // 키보드가 입력받을때 실행
+        key_input = getch(); 
+      }
       keyinput(key_input);  //xo, yo 값 바꿔줌, body위치 재설정
       reset();
       GameScreen();
+      usleep(200000);
   }
   mvprintw(15, 11, "Game Over");
   getch();
