@@ -112,7 +112,7 @@ void startScreen(){     // 시작화면
   key_input2 = getch();
   if(key_input2=='q'){clear(); endwin(); exit(0);}  // q 버튼 누르면 터미널로 돌아감.
   else{
-    if(key_input2=!'q'){   // q 이외의 버튼을 누르면 게임시작.
+    //if(key_input2!='q'){   // q 이외의 버튼을 누르면 게임시작.
       //refresh();
       //getch();
       clear();
