@@ -5,6 +5,7 @@
 #include <unistd.h>
 #include <sys/select.h>
 #include <termios.h>
+#include<locale.h>
 
 struct termios orig_termios;
 
@@ -45,6 +46,10 @@ char opposition_key = ' ' ;
 char key_input = ' ';
 char key_input2 = ' ';   // 시작화면에서 q 버튼 누르는 key 받는 입력
 WINDOW *win1;
+WINDOW *win2;
+WINDOW *win3;
+WINDOW *win4;
+WINDOW *win5;
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen();          // 게임화면
 
@@ -58,6 +63,7 @@ void printmap(int x,int y);
 void keyinput(char key);
 int main()
 {
+  setlocale(LC_ALL,"");
   startScreen();
   reset();
   GameScreen();
@@ -86,9 +92,11 @@ int main()
       GameScreen();
       usleep(130000);
   }
-  mvprintw(15, 11, "Game Over");
-  getch();
+
+  ///mvprintw(15, 11, "Game Over");
+  //getch();
   endwin();
+  //GameOver();
 
   return 0;
 }
@@ -99,7 +107,8 @@ void startScreen(){     // 시작화면
   init_pair(1, COLOR_RED,COLOR_WHITE);
   init_pair(2, COLOR_WHITE,COLOR_BLACK);
   attron(COLOR_PAIR(2));
-  border('|','|','-','-','X','X','X','X');
+  border('|','|','-','-','+','+','+','+');
+
 
   mvprintw(6,23,"____________   ______________ ___________   _____________________  ____________");
   mvprintw(7,23,"__  ___/__  | / /__    |__  //_/__  ____/   __  ____/__    |__   |/  /__  ____/");
@@ -145,77 +154,104 @@ void startScreen(){     // 시작화면
   mvprintw(35,10,"     |  __/| | |  __/\\__ \\__ \\ | |___| |\\  | | | | |___|  _ <  | || (_) | \\__ \\ || (_| | |  | |_|_|");
   mvprintw(36,10,"     |_|   |_|  \\___||___/___/ |_____|_| \\_| |_| |_____|_| \\_\\  \\__\\___/  |___/\\__\\__,_|_|   \\__(_)");
   key_input2 = getch();
-  if(key_input2=='q'){clear(); endwin(); exit(0);}  // q 버튼 누르면 터미널로 돌아감.
+  clear();
+  //reset();
+  if(key_input2=='q'){//clear();
+    endwin(); exit(0);}  // q 버튼 누르면 터미널로 돌아감.
   else{
     if(key_input2=!'q'){   // q 이외의 버튼을 누르면 게임시작.
-      //refresh();
+
       //getch();
       clear();
-      endwin();
+      refresh();
+
+      //reset();
     }
 }
-clear();
+
+getch();
+//clear();
 endwin();
+//reset();
+
+//clear();
+//endwin();
+
 }
 
 void GameScreen(){
+
   initscr();
   reset();                 // 게임 화면
-  WINDOW *win2;   // 스코어 보드 윈도우
-  WINDOW *win3;   //  미션 윈도우
-  WINDOW *win4;   //  몇번 째 STAGE 인지 알려주는 윈도우(stage 2,3,4,5 때 숫자만 바꿔주면 된다.)
+  //WINDOW *win2;   // 스코어 보드 윈도우
+  //WINDOW *win3;   //  미션 윈도우
+  //WINDOW *win4;   //  몇번 째 STAGE 인지 알려주는 윈도우(stage 2,3,4,5 때 숫자만 바꿔주면 된다.)
 
   start_color();
-  init_pair(1, COLOR_RED,COLOR_BLACK); // ? , game chang
-  init_pair(2, COLOR_BLACK,COLOR_WHITE); //fontcolor & game, score window , snake background color
-
-  win2 = newwin(13,40,5,40);
+  init_pair(1, COLOR_WHITE,COLOR_BLACK); // ? , game chang
+  init_pair(2, COLOR_WHITE,COLOR_BLACK); //fontcolor & game, score window , snake background color
+  init_pair(3, COLOR_BLACK,COLOR_WHITE);
+  win2 = newwin(13,40,15,60);
   wbkgd(win2,COLOR_PAIR(2)); //score_board color
   wattron(win2,COLOR_PAIR(2)); // score board color
-  mvwprintw(win2,1,1,"SCORE-BOARD");
+  mvwprintw(win2,1,15,"SCORE-BOARD");
   wborder(win2,'|','|','-','-','X','X','X','X');
-  mvwprintw(win2,3,1,"Length :  ");
+  mvwprintw(win2,3,10,"Length :  ");
   //std::cout << body_len << std :: endl;
 
   // 길이 출력
-  mvwprintw(win2,3,10,"%d",body_len);
+  mvwprintw(win2,3,20,"%d",body_len);
   //wrefresh(win2);
   //refresh();
-  mvwprintw(win2,5,1,"Growth-Item:     ");
-  mvwprintw(win2,5,15,"%d",body_len);          // 나중에 body_len 말고 그에 맞는 변수 넣으면 된다.
+  mvwprintw(win2,5,10,"Growth-Item:     ");
+  mvwprintw(win2,5,25,"%d",body_len);          // 나중에 body_len 말고 그에 맞는 변수 넣으면 된다.
 
-  mvwprintw(win2,7,1,"Poison-Item:     ");
-  mvwprintw(win2,7,15,"%d",body_len);
+  mvwprintw(win2,7,10,"Poison-Item:     ");
+  mvwprintw(win2,7,25,"%d",body_len);
 
-  mvwprintw(win2,9,1,"# of Gate:     ");
-  mvwprintw(win2,9,13,"%d",body_len);
+  mvwprintw(win2,9,10,"# of Gate:     ");
+  mvwprintw(win2,9,23,"%d",body_len);
 
-  mvwprintw(win2,11,1,"seconds:     ");
-  mvwprintw(win2,11,10,"%d",body_len);
+  mvwprintw(win2,11,10,"seconds:     ");
+  mvwprintw(win2,11,20,"%d",body_len);
 
 
   wrefresh(win2);
 
-  win3 = newwin(13,40,20,40);
+  win3 = newwin(13,40,29,60);
   wbkgd(win3,COLOR_PAIR(2));// mission board color
   wattron(win3,COLOR_PAIR(2));// mission board color
 
   //미션은 stage 마다 고정되게 줄건지 특정 범위에 따라 랜덤에서 줄건지 결정해보자.
-  mvwprintw(win3,1,1,"MISSION");
-  mvwprintw(win3,3,1,"B:     ");
-  mvwprintw(win3,5,1,"+:     ");
-  mvwprintw(win3,7,1,"-:     ");
-  mvwprintw(win3,9,1,"G:     ");
-  mvwprintw(win3,11,1,"seconds:     ");
+  mvwprintw(win3,1,15,"MISSION");
+  mvwprintw(win3,3,10,"B:     ");
+  mvwprintw(win3,5,10,"+:     ");
+  mvwprintw(win3,7,10,"-:     ");
+  mvwprintw(win3,9,10,"G:     ");
+  mvwprintw(win3,11,10,"seconds:     ");
   wborder(win3,'|','|','-','-','X','X','X','X');
   wrefresh(win3);
 
-  win4 = newwin(5,80,38,5);
+  win4 = newwin(8,80,1,25);
   attrset(A_BOLD);
-  wbkgd(win4,COLOR_PAIR(2)); //stage color
-  wattron(win4,COLOR_PAIR(2)); // stage color
-  mvwprintw(win4,2,33,"STAGE 1");  // stage 마다 출력 내용 바꾸면 된다.
+  wbkgd(win4,COLOR_PAIR(1)); //stitle
+  wattron(win4,COLOR_PAIR(1)); // title
+  mvwprintw(win4,0,2,"                 _                                                  ____");
+  mvwprintw(win4,1,2,"                | |                                                / . .\\");
+  mvwprintw(win4,2,2," ___ _ __   __ _| | _____    __ _  __ _ _ __ ___   ___             \\  ---<");
+  mvwprintw(win4,3,2,"/ __| '_ \\ / _` | |/ / _ \\  / _` |/ _` | '_ ` _ \\ / _ \\             \\  /");// stage 마다 출력 내용 바꾸면 된다.
+  mvwprintw(win4,4,2,"\\__ \\ | | | (_| |   <  __/ | (_| | (_| | | | | | |  __/   __________/ /");
+  mvwprintw(win4,5,2,"|___/_| |_|\\__,_|_|\\_\\___|  \\__, |\\__,_|_| |_| |_|\\___|-=:___________/ ");
+  mvwprintw(win4,6,2,"                             __/ |                     ");
+  mvwprintw(win4,7,2,"                            |___/ ");
   wrefresh(win4);
+
+  win5 = newwin(3,40,11,60);
+  attrset(A_BOLD);
+  wbkgd(win5,COLOR_PAIR(3)); //stitle
+  wattron(win5,COLOR_PAIR(3)); // title
+  mvwprintw(win5,1,15,"STAGE 1");
+  wrefresh(win5);
 
   //getch();
   curs_set(0);
@@ -225,10 +261,14 @@ void GameScreen(){
   delwin(win4);
   //endwin();
 }
-void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으로
+void reset(){
+      // 스테이지마다 다르게 설정하면 된다. 앞으로
 
   initscr();
-  win1 = newwin(32,32,5,5);
+  win1 = newwin(32,32,10,24);
+
+  //refresh();
+  wrefresh(win1); /////
   //mvwprintw(win1,yo,xo,"O");
   wbkgd(win1,COLOR_PAIR(1));// game board color
   wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
@@ -238,17 +278,17 @@ void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으
     for(int j=0;j<31;j++){
 
       if ((i==yo)&&(j==xo)){
-        mvwprintw(win1,i,j," "); //snake!
+        mvwprintw(win1,i,j,"\u2B1C"); //snake!
       }
       else{
         for(int k = 0; k<body_len; k++){
 
           if(bodyX[k] == j && bodyY[k] == i){
             if(k == 1){
-              mvwprintw(win1, i, j, " ");
+              mvwprintw(win1, i, j, "\u2B1C");
             }
             if(k >= 2){
-              mvwprintw(win1, i, j, " ");
+              mvwprintw(win1, i, j, "\u2B1C");
             }
           }
         }
@@ -257,7 +297,7 @@ void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으
   }
 
 
-  wborder(win1,' ',' ',' ',' ',' ',' ',' ',' ');
+  wborder(win1,'|','|','-','-','X','X','X','X');
   wrefresh(win1);
 
   keypad(stdscr,TRUE);
@@ -358,6 +398,7 @@ void keyinput(char key){
     }
     if (xo >= 31 || xo <= 0 || yo >= 31 || yo <= 0 ){ // 벽 닿으면 종료
       gameOver = true;
+      GameOver();
     }
 
     for(int i = 1; i < sizeof(bodyX) / sizeof(int); i++) // 머리와 몸이 닿으면 종료되는 코드
@@ -365,6 +406,7 @@ void keyinput(char key){
       if(xo == bodyX[i] && yo == bodyY[i])
       {
         gameOver = true;
+        GameOver();
       }
     }
   }
@@ -390,18 +432,33 @@ void GameOver(){
   start_color();
   init_pair(1, COLOR_GREEN,COLOR_BLACK);
   init_pair(2, COLOR_RED,COLOR_WHITE);
+  wborder(gameover_window,'|','|','-','-','+','+','+','+');
 
 
   gameover_window = newwin(25,43,5,5);
   wbkgd(gameover_window,COLOR_PAIR(2));
   wattron(gameover_window,COLOR_PAIR(2));
   attrset(A_BOLD);
-  mvprintw(22,20,"+-----------------------------------------------+");
-  mvprintw(23,20,"|  G     A     M     E     O     V     E     R  |");
-  mvprintw(24,20,"+-----------------------------------------------+");
+  mvprintw(12,25,"  ,--,     .--.           ,---.    .---..-.   .-.,---.  ,---.   ");
+  mvprintw(13,25,".' .'     / /\\ \\ |\\    /| | .-'   / .-. )\\ \\ / / | .-'  | .-.\\  ");
+  mvprintw(14,25,"|  |  __ / /__\\ \\|(\\  / | | `-.   | | |(_)\\ V /  | `-.  | `-'/ ");
+  mvprintw(15,25,"\\  \\ ( _)|  __  |(_)\\/  | | .-'   | | | |  ) /   | .-'  |   (  ");
+  mvprintw(16,25," \\  `-) )| |  |)|| \\  / | |  `--. \\ `-' / (_)    |  `--.| |\\ \\ ");
+  mvprintw(17,25," )\\____/ |_|  (_)| |\\/| | /( __.'  )---'         /( __.'|_| \\)\\ ");
+  mvprintw(18,25,"(__)             '-'  '-'(__)     (_)           (__)        (__)");
+  mvprintw(19,59,"                      __    __    __    __");
+  mvprintw(20,59,"                     /  \\  /  \\  /  \\  /  \\");
+  mvprintw(21,5,"__________________________________________________________________________/  __\\/  __\\/  __\\/  __\\___________________");
+  mvprintw(22,5,"_________________________________________________________________________/  /__/  /__/  /__/  /______________________");
+  mvprintw(23,59,"                   | / \\   / \\   / \\   / \\  \\____");
+  mvprintw(24,59,"                   |/   \\_/   \\_/   \\_/   \\    o \\");
+  mvprintw(25,59,"                                           \\_____/--<");
+
+
   wborder(gameover_window,'|','|','-','-','X','X','X','X');
   wrefresh(gameover_window);
   //std:: cout << "Game Over" << std::endl; // 이거를 윈도우에 띄우면 좋을
+
   getch();
   clear();
   endwin();
