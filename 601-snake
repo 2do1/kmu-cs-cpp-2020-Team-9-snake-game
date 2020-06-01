@@ -145,8 +145,8 @@ void GameScreen(){
   WINDOW *win4;   //  몇번 째 STAGE 인지 알려주는 윈도우(stage 2,3,4,5 때 숫자만 바꿔주면 된다.)
 
   start_color();
-  init_pair(1, COLOR_RED,COLOR_BLACK); // ? , game chang
-  init_pair(2, COLOR_BLACK,COLOR_WHITE); //fontcolor & game, score window , snake background color
+  init_pair(1, COLOR_RED,COLOR_BLACK); 
+  init_pair(2, COLOR_BLACK,COLOR_WHITE); 
 
   win2 = newwin(13,40,5,40);
   wbkgd(win2,COLOR_PAIR(2)); //score_board color
@@ -210,7 +210,7 @@ void reset(){        // 스테이지마다 다르게 설정하면 된다. 앞으
   win1 = newwin(32,32,5,5);
   //mvwprintw(win1,yo,xo,"O");
   wbkgd(win1,COLOR_PAIR(1));// game board color
-  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
+  wattron(win1,COLOR_PAIR(2)); 
   //mvwprintw(win1,15,12,"STAGE 1");
 
   for(int i=0;i<31;i++){
