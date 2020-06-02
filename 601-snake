@@ -6,6 +6,7 @@
 #include <sys/select.h>
 #include <termios.h>
 #include<locale.h>
+#include <stdio.h>
 
 struct termios orig_termios;
 
@@ -45,13 +46,16 @@ int body_len = 5; // 길이 5로 늘려줌
 char opposition_key = ' ' ;
 char key_input = ' ';
 char key_input2 = ' ';   // 시작화면에서 q 버튼 누르는 key 받는 입력
+WINDOW *backwin;
 WINDOW *win1;
 WINDOW *win2;
 WINDOW *win3;
 WINDOW *win4;
 WINDOW *win5;
+
 void startScreen();          // 맨 처음 시작 화면
-void GameScreen();          // 게임화면
+void GameScreen();
+void printPause();        // 게임화면
 
 //void score_board();
 
@@ -63,10 +67,12 @@ void printmap(int x,int y);
 void keyinput(char key);
 int main()
 {
+  //printPause();
   setlocale(LC_ALL,"");
   startScreen();
-  reset();
   GameScreen();
+  reset();
+
   printmap(30,30);
 
   // body 길이를 5까지로 늘림
@@ -191,7 +197,10 @@ void GameScreen(){
   init_pair(1, COLOR_WHITE,COLOR_BLACK); // ? , game chang
   init_pair(2, COLOR_WHITE,COLOR_BLACK); //fontcolor & game, score window , snake background color
   init_pair(3, COLOR_BLACK,COLOR_WHITE);
+  init_pair(4, COLOR_WHITE,COLOR_GREEN);
+  init_pair(5, COLOR_WHITE,COLOR_BLACK);
   win2 = newwin(13,40,15,60);
+  //box(win2,0,0);
   wbkgd(win2,COLOR_PAIR(2)); //score_board color
   wattron(win2,COLOR_PAIR(2)); // score board color
   mvwprintw(win2,1,15,"SCORE-BOARD");
@@ -232,7 +241,7 @@ void GameScreen(){
   wborder(win3,'|','|','-','-','X','X','X','X');
   wrefresh(win3);
 
-  win4 = newwin(8,80,1,25);
+  win4 = newwin(8,80,0,25);
   attrset(A_BOLD);
   wbkgd(win4,COLOR_PAIR(1)); //stitle
   wattron(win4,COLOR_PAIR(1)); // title
@@ -253,25 +262,44 @@ void GameScreen(){
   mvwprintw(win5,1,15,"STAGE 1");
   wrefresh(win5);
 
+
+
   //getch();
   curs_set(0);
 
   delwin(win2);
   delwin(win3);
   delwin(win4);
+
   //endwin();
 }
 void reset(){
       // 스테이지마다 다르게 설정하면 된다. 앞으로
 
+  WINDOW *backwin2;
   initscr();
   win1 = newwin(32,32,10,24);
 
+  //backwin2 = newwin(36,36,8,22);
+
   //refresh();
+  //wrefresh(backwin2);
+
   wrefresh(win1); /////
   //mvwprintw(win1,yo,xo,"O");
+  //wbkgd(backwin2,COLOR_PAIR(5));
+
   wbkgd(win1,COLOR_PAIR(1));// game board color
   wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
+  backwin = newwin(34,34,9,23);
+
+  wrefresh(backwin);
+  wbkgd(backwin,COLOR_PAIR(4));
+  wattron(backwin,COLOR_PAIR(4));
+  wrefresh(backwin);
+
+
+  //wattron(backwin2,COLOR_PAIR(5));
   //mvwprintw(win1,15,12,"STAGE 1");
 
   for(int i=0;i<31;i++){
@@ -296,9 +324,12 @@ void reset(){
     }
   }
 
+  //box(backwin2,0,0);
+  //wborder(win1,'|','|','-','-','X','X','X','X');
+  //wrefresh(backwin2);
 
-  wborder(win1,'|','|','-','-','X','X','X','X');
   wrefresh(win1);
+
 
   keypad(stdscr,TRUE);
   noecho();
@@ -423,6 +454,75 @@ void pausebutton(){
   //reset();
   return;
 }
+
+void printPause(){
+
+  WINDOW *w;
+   char list[3][20] = { "    RESUME    ", "    RESTART   ", "     Quit     "};
+   char item[20];
+   int ch, i =30, width = 60;
+
+   initscr();
+   w = newwin( 11, 33, 1, 1 );
+   init_pair(6, COLOR_WHITE, COLOR_BLACK);
+   wbkgd(w,COLOR_PAIR(6));
+   wattron(w,COLOR_PAIR(6));
+   wrefresh(w);
+
+   box( w, 0, 0 );
+
+
+   for( i=0; i<3; i++ ) {
+       if( i == 0 )
+           wattron( w, A_STANDOUT ); // highlights the first item.
+       else
+           wattroff( w, A_STANDOUT );
+       sprintf(item, "%-7s",  list[i]);
+       mvwprintw( w, i+6, 9, "%s", item );
+   }
+
+   mvwprintw( w,1,3,"   ___   _   _ __  ___  ___" );
+   mvwprintw( w,2,3,"  / o |.' \\ /// /,' _/ / _/" );
+   mvwprintw( w,3,3," / _,'/ o // U /_\\ `. / _/ " );
+   mvwprintw( w,4,3,"/_/  /_n_/ \\_,'/___,'/___/ " );
+
+   wrefresh( w );
+
+   i = 0;
+   noecho();
+   keypad( w, TRUE );
+   curs_set( 0 );
+
+
+   while(( ch = wgetch(w)) != 'q'){
+
+
+           sprintf(item, "%-7s",  list[i]);
+           mvwprintw( w, i+6, 9, "%s", item );
+
+           switch( ch ) {
+               case 'w':
+                           i--;
+                           i = ( i<0 ) ? 2 : i;
+                           break;
+               case 's':
+                           i++;
+                           i = ( i>2 ) ? 0 : i;
+                           break;
+           }
+           // now highlight the next item in the list.
+           wattron( w, A_STANDOUT );
+
+           sprintf(item, "%-7s",  list[i]);
+           mvwprintw( w, i+6, 9, "%s", item);
+           wattroff( w, A_STANDOUT );
+   }
+
+   delwin( w );
+   endwin();
+
+}
+
 
 void GameOver(){
   clear();
