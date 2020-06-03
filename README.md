@@ -35,7 +35,7 @@ int main(void){
 
 ```
 
-## conference 02
+## conference 02 + conference 03
 ```
 채환,도원 -> 틱 및 수정사항 구현
 소현,정엽 -> Ncurse / UI 구현
