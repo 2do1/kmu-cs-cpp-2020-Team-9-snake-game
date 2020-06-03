@@ -43,9 +43,17 @@ int yo=15;
 bool gameOver=false;
 int bodyX[30] = {0} , bodyY[30] = {0};
 int body_len = 5; // 길이 5로 늘려줌
+
+int Growth_Item = 5;
+int Poison_Item = 8;
+int numberOfgate = 3;
+int timeseconds = 30;
+
 char opposition_key = ' ' ;
 char key_input = ' ';
 char key_input2 = ' ';   // 시작화면에서 q 버튼 누르는 key 받는 입력
+char select_key = ' ';   // pause화면에서 enterkey 받는 입력
+
 WINDOW *backwin;
 WINDOW *win1;
 WINDOW *win2;
@@ -164,8 +172,8 @@ void startScreen(){     // 시작화면
   //reset();
   if(key_input2=='q'){//clear();
     endwin(); exit(0);}  // q 버튼 누르면 터미널로 돌아감.
-  else{
-    if(key_input2=!'q'){   // q 이외의 버튼을 누르면 게임시작.
+  else if(key_input2=='\n'){
+    //if(key_input2=!'q'){   // q 이외의 버튼을 누르면 게임시작.
 
       //getch();
       clear();
@@ -173,16 +181,9 @@ void startScreen(){     // 시작화면
 
       //reset();
     }
-}
-
-getch();
-//clear();
-endwin();
-//reset();
-
-//clear();
-//endwin();
-
+    else{   // 'q' 키와 '엔터키 ' 이외에는 그냥 계속 시작화면
+      startScreen();
+    }
 }
 
 void GameScreen(){
@@ -203,7 +204,7 @@ void GameScreen(){
   //box(win2,0,0);
   wbkgd(win2,COLOR_PAIR(2)); //score_board color
   wattron(win2,COLOR_PAIR(2)); // score board color
-  mvwprintw(win2,1,15,"SCORE-BOARD");
+  mvwprintw(win2,1,1,"*-*-*-*-*-*-*-SCORE-BOARD-*-*-*-*-*-*-");
   wborder(win2,'|','|','-','-','X','X','X','X');
   mvwprintw(win2,3,10,"Length :  ");
   //std::cout << body_len << std :: endl;
@@ -213,16 +214,16 @@ void GameScreen(){
   //wrefresh(win2);
   //refresh();
   mvwprintw(win2,5,10,"Growth-Item:     ");
-  mvwprintw(win2,5,25,"%d",body_len);          // 나중에 body_len 말고 그에 맞는 변수 넣으면 된다.
+  mvwprintw(win2,5,25,"%d",Growth_Item);          // stage1 에서 growth item 초기값
 
   mvwprintw(win2,7,10,"Poison-Item:     ");
-  mvwprintw(win2,7,25,"%d",body_len);
+  mvwprintw(win2,7,25,"%d",Poison_Item);        // stage1 에서 posion item 초기값
 
   mvwprintw(win2,9,10,"# of Gate:     ");
-  mvwprintw(win2,9,23,"%d",body_len);
+  mvwprintw(win2,9,23,"%d",numberOfgate);
 
   mvwprintw(win2,11,10,"seconds:     ");
-  mvwprintw(win2,11,20,"%d",body_len);
+  mvwprintw(win2,11,20,"%d",timeseconds);
 
 
   wrefresh(win2);
@@ -232,12 +233,21 @@ void GameScreen(){
   wattron(win3,COLOR_PAIR(2));// mission board color
 
   //미션은 stage 마다 고정되게 줄건지 특정 범위에 따라 랜덤에서 줄건지 결정해보자.
-  mvwprintw(win3,1,15,"MISSION");
-  mvwprintw(win3,3,10,"B:     ");
-  mvwprintw(win3,5,10,"+:     ");
-  mvwprintw(win3,7,10,"-:     ");
-  mvwprintw(win3,9,10,"G:     ");
-  mvwprintw(win3,11,10,"seconds:     ");
+  mvwprintw(win3,1,1,"*-*-*-*-*-*-*-MISSION-*-*-*-*-*-*-*-*-*-");
+  mvwprintw(win3,3,10,"Snake_length:     ");
+  mvwprintw(win3,3,25,"%d",body_len);      // 몸 길이
+
+  mvwprintw(win3,5,10,"+(growth):     ");
+  mvwprintw(win3,5,22,"%d",Growth_Item);    // 획득 아이템
+
+  mvwprintw(win3,7,10,"-(loss):     ");
+  mvwprintw(win3,7,20,"%d",Poison_Item);    // 손실 아이템
+
+  mvwprintw(win3,9,10,"Gate:     ");
+  mvwprintw(win3,9,18,"%d",numberOfgate);      // 통과할 게이트 수 : stage1 에서는 3개
+
+  mvwprintw(win3,11,10,"seconds:     ");       // 게임시작 후 몇초만 지나면 통과 : stage1 에서는 30초
+  mvwprintw(win3,11,22,"%d",timeseconds);
   wborder(win3,'|','|','-','-','X','X','X','X');
   wrefresh(win3);
 
@@ -378,12 +388,14 @@ void keyinput(char key){
 
 
   if(key =='q'){
+    GameOver();
     clear();
     endwin();
+    exit(0);
   }
 
   else if(key =='p'){
-    pausebutton();
+    printPause();
   }
   else if(key =='w' || key =='a' || key =='s'||key =='d'){
     for(int i = 0; i<body_len; i++){
@@ -562,4 +574,5 @@ void GameOver(){
   getch();
   clear();
   endwin();
+  exit(0);
 }
