@@ -97,14 +97,16 @@ int main()
   int i=30;
   int j=30;
 
-  for (int k=0; k<4 ; i-=3, j-=3){
+  for (int k=0; k<4 ; i-=3, j-=3,k++){
+    body_len=3;
     GameScreen(i,j);
 
     printmap(30,30);
 
     GrowthItem();
     PoisonItem();
-    while(!gameOver){
+    while(body_len<4){
+
         if(kbhit()){
           key_input = getch();
         }
@@ -123,6 +125,7 @@ int main()
         }
 
     }
+    clear();
 
 
   }
@@ -646,10 +649,7 @@ void printPause(){
   delwin(w);
   endwin();
 /**
-
-
   if (i==1){
-
      reset();
   }
   if (i==2){
