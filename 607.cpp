@@ -297,7 +297,7 @@ void GameScreen(){
 void reset(){ //1단계
       // 스테이지마다 다르게 설정하면 된다. 앞으로
   tick = 150000;
-
+  WINDOW *backwin2;
   initscr();
   win1 = newwin(32,32,10,24);
 
@@ -309,11 +309,16 @@ void reset(){ //1단계
   wrefresh(win1); /////
   //mvwprintw(win1,yo,xo,"O");
   //wbkgd(backwin2,COLOR_PAIR(5));
-  //wborder(win1,'|','|','-','-','X','X','X','X');
+
   wbkgd(win1,COLOR_PAIR(1));// game board color
   wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
+  backwin = newwin(34,36,9,22);
+  //mvwprintw(backwin,32,34,"\u2B1C");
 
-
+  wrefresh(backwin);
+  wbkgd(backwin,COLOR_PAIR(4));
+  wattron(backwin,COLOR_PAIR(4));
+  wrefresh(backwin);
 
 
   //wattron(backwin2,COLOR_PAIR(5));
@@ -325,11 +330,11 @@ void reset(){ //1단계
       for(int k = 1; k<body_len; k++){
 
         if(growthX == j && growthY == i){
-          mvwprintw(win1, i, j, "\u2B50");
+          mvwprintw(win1, i, j, "G");
         }
         else if(poisonX == j && poisonY == i)
         {
-          mvwprintw(win1, i, j, "\u2620");
+          mvwprintw(win1, i, j, "P");
         }
         else if(bodyX[k] == j && bodyY[k] == i){
             mvwprintw(win1, i, j, "\u2B1C");
@@ -342,7 +347,7 @@ void reset(){ //1단계
   }
 
   //box(backwin2,0,0);
-  wborder(win1,'|','|','-','-','X','X','X','X');
+  //wborder(win1,'|','|','-','-','X','X','X','X');
   //wrefresh(backwin2);
 
   wrefresh(win1);
@@ -427,7 +432,6 @@ void PoisonP(){
   {
     if(body_len ==3){
       gameOver = TRUE;
-
     }
     PoisonItem();
     body_len--;
@@ -530,7 +534,7 @@ void keyinput(char key){
 
 
 
-    if (xo >= 32 || xo < 0 || yo >= 32 || yo < 0 ){ // 벽 닿으면 종료
+    if (xo > 31 || xo < 0 || yo > 31 || yo < 0 ){ // 벽 닿으면 종료
       gameOver = true;
       GameOver();
     }
@@ -566,8 +570,8 @@ void printPause(){
    int ch, i =30, width = 60;
 
    initscr();
-   w = newwin( 11, 33, 18, 45 );
-   init_pair(6, COLOR_BLACK, COLOR_WHITE);
+   w = newwin( 11, 33, 1, 1 );
+   init_pair(6, COLOR_WHITE, COLOR_BLACK);
    wbkgd(w,COLOR_PAIR(6));
    wattron(w,COLOR_PAIR(6));
    wrefresh(w);
