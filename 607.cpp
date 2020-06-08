@@ -297,7 +297,7 @@ void GameScreen(){
 void reset(){ //1단계
       // 스테이지마다 다르게 설정하면 된다. 앞으로
   tick = 150000;
-  WINDOW *backwin2;
+
   initscr();
   win1 = newwin(32,32,10,24);
 
@@ -309,20 +309,16 @@ void reset(){ //1단계
   wrefresh(win1); /////
   //mvwprintw(win1,yo,xo,"O");
   //wbkgd(backwin2,COLOR_PAIR(5));
-
+  //wborder(win1,'|','|','-','-','X','X','X','X');
   wbkgd(win1,COLOR_PAIR(1));// game board color
   wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-  backwin = newwin(34,34,9,23);
 
-  wrefresh(backwin);
-  wbkgd(backwin,COLOR_PAIR(4));
-  wattron(backwin,COLOR_PAIR(4));
-  wrefresh(backwin);
+
 
 
   //wattron(backwin2,COLOR_PAIR(5));
   //mvwprintw(win1,15,12,"STAGE 1");
-  mvwprintw(win1, yo, xo, "\u2B1C");
+  mvwprintw(win1, yo, xo, "0");
   for(int i=0;i<31;i++){
     for(int j=0;j<31;j++){
 
@@ -336,7 +332,7 @@ void reset(){ //1단계
           mvwprintw(win1, i, j, "P");
         }
         else if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "\u2B1C");
+            mvwprintw(win1, i, j, "0");
         }
 
 
@@ -346,7 +342,7 @@ void reset(){ //1단계
   }
 
   //box(backwin2,0,0);
-  //wborder(win1,'|','|','-','-','X','X','X','X');
+  wborder(win1,'|','|','-','-','X','X','X','X');
   //wrefresh(backwin2);
 
   wrefresh(win1);
@@ -534,7 +530,7 @@ void keyinput(char key){
 
 
 
-    if (xo >= 31 || xo <= 0 || yo >= 31 || yo <= 0 ){ // 벽 닿으면 종료
+    if (xo >= 32 || xo < 0 || yo >= 32 || yo < 0 ){ // 벽 닿으면 종료
       gameOver = true;
       GameOver();
     }
