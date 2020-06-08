@@ -318,21 +318,21 @@ void reset(){ //1단계
 
   //wattron(backwin2,COLOR_PAIR(5));
   //mvwprintw(win1,15,12,"STAGE 1");
-  mvwprintw(win1, yo, xo, "0");
+  mvwprintw(win1, yo, xo, "\u2B1C");
   for(int i=0;i<31;i++){
     for(int j=0;j<31;j++){
 
       for(int k = 1; k<body_len; k++){
 
         if(growthX == j && growthY == i){
-          mvwprintw(win1, i, j, "G");
+          mvwprintw(win1, i, j, "\u2B50");
         }
         else if(poisonX == j && poisonY == i)
         {
-          mvwprintw(win1, i, j, "P");
+          mvwprintw(win1, i, j, "\u2620");
         }
         else if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "0");
+            mvwprintw(win1, i, j, "\u2B1C");
         }
 
 
@@ -566,8 +566,8 @@ void printPause(){
    int ch, i =30, width = 60;
 
    initscr();
-   w = newwin( 11, 33, 1, 1 );
-   init_pair(6, COLOR_WHITE, COLOR_BLACK);
+   w = newwin( 11, 33, 18, 45 );
+   init_pair(6, COLOR_BLACK, COLOR_WHITE);
    wbkgd(w,COLOR_PAIR(6));
    wattron(w,COLOR_PAIR(6));
    wrefresh(w);
