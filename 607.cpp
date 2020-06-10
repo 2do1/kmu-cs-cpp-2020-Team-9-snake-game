@@ -57,31 +57,35 @@ char key_input = ' ';
 char key_input2 = ' ';   // 시작화면에서 q 버튼 누르는 key 받는 입력
 char select_key = ' ';   // pause화면에서 enterkey 받는 입력
 
-WINDOW *backwin;
-WINDOW *win1;
+
 WINDOW *win2;
 WINDOW *win3;
 WINDOW *win4;
 WINDOW *win5;
 
 void startScreen();          // 맨 처음 시작 화면
-void GameScreen(int x, int y);
+void GameScreen(int x);
 void printPause();        // 게임화면
 
 //void score_board();
 
-void reset(int x,int y);               // stage1
+void stage1();
+void stage2();
+void stage3();
+void stage4();
+               // stage1
 void pausebutton();         // 게임 중 p 버튼 누르면 함수 실행
 void EatG();
 void PoisonP();
 void GameOver();              // GameOver 화면 윈도우에 띄우기
-void printmap(int x,int y);
 void keyinput(char key);
 void GrowthItem();
 void PoisonItem();
+void NextStage();
 
 int main()
 {
+  //NextStage();
   tick = 0;
   int whileTimes = 0;
   // body 길이를 5까지로 늘림
@@ -94,17 +98,17 @@ int main()
   setlocale(LC_ALL,"");
   startScreen();
 
-  int i=30;
-  int j=30;
 
-  for (int k=0; k<4 ; i-=3, j-=3,k++){
+  for(int k=0 ; k<4 ; k++ ){
     body_len=3;
-    GameScreen(i,j);
+    xo=15;
+    yo = 15;
 
-    printmap(30,30);
 
+    GameScreen(k);
     GrowthItem();
     PoisonItem();
+
     while(body_len<4){
 
         if(kbhit()){
@@ -114,9 +118,13 @@ int main()
         keyinput(key_input);  //xo, yo 값 바꿔줌, body위치 재설정
         EatG(); //뱀의 머리가 닿으면 G가 다른위치로 바뀌고 길이 늘려주기
         PoisonP();
-        reset(i,j);
 
-        GameScreen(i,j);
+        if (k==0){stage1();}
+        if (k==1){stage2();}
+        if (k==2){stage3();}
+        if (k==3){stage4();}
+
+        GameScreen(k);
         usleep(tick);
         whileTimes += tick;
         if(whileTimes % 3000000 == 0){ // 와일문 20번 돌때마다 틱바꿔주기
@@ -125,19 +133,13 @@ int main()
         }
 
     }
-    clear();
-
+  clear();
 
   }
-
-
-  ///mvprintw(15, 11, "Game Over");
-  //getch();
-  endwin();
-  //GameOver();
-
   return 0;
 }
+
+
 void startScreen(){     // 시작화면
   initscr();        // Curses 모드 시작
   start_color();    // Color 사용 선언
@@ -213,10 +215,15 @@ void startScreen(){     // 시작화면
     }
 }
 
-void GameScreen(int x, int y){
+void GameScreen(int x){
 
   initscr();
-  reset(x, y);                 // 게임 화면
+
+  if (x==0) {stage1();}
+  if (x==1) {stage2();}
+  if (x==2) {stage3();}
+  if (x==3) {stage4();}
+                 // 게임 화면
   //WINDOW *win2;   // 스코어 보드 윈도우
   //WINDOW *win3;   //  미션 윈도우
   //WINDOW *win4;   //  몇번 째 STAGE 인지 알려주는 윈도우(stage 2,3,4,5 때 숫자만 바꿔주면 된다.)
@@ -310,40 +317,27 @@ void GameScreen(int x, int y){
 
   //endwin();
 }
-void reset(int x, int y){ //1단계
-      // 스테이지마다 다르게 설정하면 된다. 앞으로
+void stage1(){ //1단계
+
+  WINDOW *backwin;
+  WINDOW *win1;
+
   tick = 150000;
-
   initscr();
-
-
-  win1 = newwin(x,y,10,24);
-
-  //backwin2 = newwin(36,36,8,22);
-
-  //refresh();
-  //wrefresh(backwin2);
-
-  wrefresh(win1); /////
-  //mvwprintw(win1,yo,xo,"O");
-  //wbkgd(backwin2,COLOR_PAIR(5));
-
-  wbkgd(win1,COLOR_PAIR(1));// game board color
+  win1 = newwin(30,30,10,24);
+  wrefresh(win1);
+  wbkgd(win1,COLOR_PAIR(1));
   wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-  backwin = newwin(x+2,y+4,9,22);
-  //mvwprintw(backwin,32,34,"\u2B1C");
-
+  backwin = newwin(32,34,9,22);
   wrefresh(backwin);
   wbkgd(backwin,COLOR_PAIR(4));
   wattron(backwin,COLOR_PAIR(4));
   wrefresh(backwin);
 
 
-  //wattron(backwin2,COLOR_PAIR(5));
-  //mvwprintw(win1,15,12,"STAGE 1");
   mvwprintw(win1, yo, xo, "0");
-  for(int i=0;i<(x-1);i++){
-    for(int j=0;j<(y-1);j++){
+  for(int i=0;i<30;i++){
+    for(int j=0;j<30;j++){
 
       for(int k = 1; k<body_len; k++){
 
@@ -357,26 +351,160 @@ void reset(int x, int y){ //1단계
         else if(bodyX[k] == j && bodyY[k] == i){
             mvwprintw(win1, i, j, "0");
         }
-
-
       }
-
     }
   }
 
-  //box(backwin2,0,0);
-  //wborder(win1,'|','|','-','-','X','X','X','X');
-  //wrefresh(backwin2);
-
   wrefresh(win1);
-
-
   keypad(stdscr,TRUE);
   noecho();
   curs_set(0);
-  //getch();
   delwin(win1);
+  delwin(backwin);
+  endwin();
 }
+
+void stage2(){ //2단계
+  WINDOW *backwin;
+  WINDOW *win1;
+
+  tick = 150000;
+  initscr();
+  win1 = newwin(27,27,10,24);
+  wrefresh(win1);
+  wbkgd(win1,COLOR_PAIR(1));
+  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
+  backwin = newwin(29,31,9,22);
+  wrefresh(backwin);
+  wbkgd(backwin,COLOR_PAIR(4));
+  wattron(backwin,COLOR_PAIR(4));
+  wrefresh(backwin);
+
+
+  mvwprintw(win1, yo, xo, "0");
+  for(int i=0;i<27;i++){
+    for(int j=0;j<27;j++){
+
+      for(int k = 1; k<body_len; k++){
+
+        if(growthX == j && growthY == i){
+          mvwprintw(win1, i, j, "G");
+        }
+        else if(poisonX == j && poisonY == i)
+        {
+          mvwprintw(win1, i, j, "P");
+        }
+        else if(bodyX[k] == j && bodyY[k] == i){
+            mvwprintw(win1, i, j, "0");
+        }
+      }
+    }
+  }
+
+  wrefresh(win1);
+  keypad(stdscr,TRUE);
+  noecho();
+  curs_set(0);
+  delwin(win1);
+  delwin(backwin);
+  endwin();
+}
+
+void stage3(){ //1단계
+  WINDOW *backwin;
+  WINDOW *win1;
+
+  tick = 150000;
+  initscr();
+  win1 = newwin(24,24,10,24);
+  wrefresh(win1);
+  wbkgd(win1,COLOR_PAIR(1));
+  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
+  backwin = newwin(26,28,9,22);
+  wrefresh(backwin);
+  wbkgd(backwin,COLOR_PAIR(4));
+  wattron(backwin,COLOR_PAIR(4));
+  wrefresh(backwin);
+
+
+  mvwprintw(win1, yo, xo, "0");
+  for(int i=0;i<(23);i++){
+    for(int j=0;j<(23);j++){
+
+      for(int k = 1; k<body_len; k++){
+
+        if(growthX == j && growthY == i){
+          mvwprintw(win1, i, j, "G");
+        }
+        else if(poisonX == j && poisonY == i)
+        {
+          mvwprintw(win1, i, j, "P");
+        }
+        else if(bodyX[k] == j && bodyY[k] == i){
+            mvwprintw(win1, i, j, "0");
+        }
+      }
+    }
+  }
+
+  wrefresh(win1);
+  keypad(stdscr,TRUE);
+  noecho();
+  curs_set(0);
+  delwin(win1);
+  delwin(backwin);
+  endwin();
+}
+
+void stage4(){ //1단계
+  WINDOW *backwin;
+  WINDOW *win1;
+
+  tick = 150000;
+  initscr();
+  win1 = newwin(21,21,10,24);
+  wrefresh(win1);
+  wbkgd(win1,COLOR_PAIR(1));
+  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
+  backwin = newwin(23,25,9,22);
+  wrefresh(backwin);
+  wbkgd(backwin,COLOR_PAIR(4));
+  wattron(backwin,COLOR_PAIR(4));
+  wrefresh(backwin);
+
+
+  mvwprintw(win1, yo, xo, "0");
+  for(int i=0;i<20;i++){
+    for(int j=0;j<20;j++){
+
+      for(int k = 1; k<body_len; k++){
+
+        if(growthX == j && growthY == i){
+          mvwprintw(win1, i, j, "G");
+        }
+        else if(poisonX == j && poisonY == i)
+        {
+          mvwprintw(win1, i, j, "P");
+        }
+        else if(bodyX[k] == j && bodyY[k] == i){
+            mvwprintw(win1, i, j, "0");
+        }
+      }
+    }
+  }
+
+  wrefresh(win1);
+  keypad(stdscr,TRUE);
+  noecho();
+  curs_set(0);
+  delwin(win1);
+  delwin(backwin);
+  endwin();
+}
+
+
+
+
 
 void GrowthItem()
 {
@@ -458,35 +586,6 @@ void PoisonP(){
   }
 }
 
-void printmap(int x, int y){
-
-  mvwprintw(win1,yo,xo,"o");
-
-  int map[x][y]={0,};   // 우선 map 의 모든 값을 0으로 설정한다.
-
-  map[0][0]=2;     // immune wall 의 값을 2로 지정
-  map[0][y-1]=2;
-  map[x-1][0]=2;
-  map[x-1][y-1]=2;
-
-  map[xo][yo]=3;      // 뱀 머리는 3이라는 값으로 설정
-                        // 뱀 몸, 뱀 꼬리도 4,5 라는 값으로 설정해주면 된다.
-
-  for(int i=1;i<y-1;i++){    // 위쪽 wall의 값을 1로 지정
-    map[0][i]=1;
-  }
-  for(int i=1;i<x-1;i++){    // 왼쪽 wall의 값을 1로 지정
-    map[i][0]=1;
-  }
-  for(int i=1;i<x-1;i++){    // 오른쪽 wall의 값을 1로 지정
-    map[i][y-1]=1;
-  }
-  for(int i=1;i<y-1;i++){   // 아래쪽 wall의 값을 1로 지정
-    map[x-1][i]=1;
-  }
-
-
-}
 
 void keyinput(char key){
 
@@ -699,4 +798,46 @@ void GameOver(){
   clear();
   endwin();
   exit(0);
+}
+
+void NextStage(){
+
+  initscr();
+  WINDOW *NextStage_window;   // 게임오버  윈도우
+
+  start_color();
+  init_pair(1, COLOR_GREEN,COLOR_BLACK);
+  init_pair(2, COLOR_RED,COLOR_WHITE);
+  wborder(NextStage_window,'|','|','-','-','+','+','+','+');
+
+
+  NextStage_window= newwin(25,43,5,5);
+  wbkgd(NextStage_window,COLOR_PAIR(2));
+  wattron(NextStage_window,COLOR_PAIR(2));
+  attrset(A_BOLD);
+  mvprintw(11,25," ____");
+  mvprintw(12,25,"/\\  _`\\     ");
+  mvprintw(13,25,"\\ \\,\\L\\_\\  __  __    ___    ___     __    ____    ____  ");
+  mvprintw(14,25," \\/_\\__ \\ /\\ \\/\\ \\  /'___\\ /'___\\ /'__`\\ /',__\\  /',__\\ ");
+  mvprintw(15,25,"   /\\ \\L\\ \\ \\ \\_\\ \\/\\ \\__//\\ \\__//\\  __//\\__, `\\/\\__, `\\");
+  mvprintw(16,25,"   \\ `\\____\\ \\____/\\ \\____\\ \\____\\ \\____\\/\\____/\\/\\____/");
+  mvprintw(17,25,"    \\/_____/\\/___/  \\/____/\\/____/\\/____/\\/___/  \\/___/ ");
+
+  mvprintw(19,25," __  __                  __        ____    __");
+  mvprintw(20,25,"/\\ \\/\\ \\                /\\ \\__    /\\  _`\\ /\\ \\__ ");
+  mvprintw(21,25,"\\ \\ `\\\\ \\     __   __  _\\ \\ ,_\\   \\ \\,\\L\\_\\ \\ ,_\\    __       __      __  ");
+  mvprintw(22,25," \\ \\ , ` \\  /'__`\\/\\ \\/'\\\\ \\ \\/    \\/_\\__ \\\\ \\ \\/  /'__`\\   /'_ `\\  /'__`\\");
+  mvprintw(23,25,"  \\ \\ \\`\\ \\/\\  __/\\/>  </ \\ \\ \\_     /\\ \\L\\ \\ \\ \\_/\\ \\L\\.\\_/\\ \\L\\ \\/\\  __/ ");
+  mvprintw(24,25,"   \\ \\_\\ \\_\\ \\____\\/\\_/\\_\\ \\ \\__\\    \\ `\\____\\ \\__\\ \\__/.\\_\\ \\____ \\ \\____\\");
+  mvprintw(25,25,"    \\/_/\\/_/\\/____/\\//\\/_/  \\/__/     \\/_____/\\/__/\\/__/\\/_/\\/___L\\ \\/____/");
+  mvprintw(26,25,"                                                              /\\____/ ");
+  mvprintw(27,25,"                                                              \\_/__/ ");
+
+
+
+
+  getch();
+  clear();
+  endwin();
+
 }
