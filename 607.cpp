@@ -129,6 +129,7 @@ int main()
         if (k==3){stage4();}
 
         GameScreen(k);
+        usleep(tick);
         whileTimes += tick;
         if(whileTimes % 3000000 == 0){ // 와일문 20번 돌때마다 틱바꿔주기
           GrowthItem();
@@ -322,7 +323,6 @@ void GameScreen(int x){
 
   //endwin();
 }
-
 void stage1(){ //1단계
 
 
