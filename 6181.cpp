@@ -293,9 +293,9 @@ int main()
 
     }
 
-
+    usleep(1000000);
   clear();
-  usleep(1000000);
+
 
   }
   return 0;
@@ -717,9 +717,7 @@ void EatG(){
 void PoisonP(){
   if(xo == poisonX && yo == poisonY)
   {
-    if(body_len ==3){
-      gameOver = TRUE;
-    }
+    
     PoisonItem();
     body_len--;
     current_body_len--;
@@ -809,6 +807,10 @@ void keyinput(int stage_num, char key){
     }
   }
   else{}
+  if (body_len == 2){  // 현재 입력 받은 키와 전에 입력받은 키의 반대키가 같으면 게임종료.
+    gameOver = true;
+    GameOver();
+  }
 
 
 }
