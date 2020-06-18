@@ -248,14 +248,25 @@ int main()
 
 
   for(int stage_number=0 ; stage_number<4 ; stage_number++ ){
-    body_len=3;
-    xo=15;
-    yo = 15;
-    bodyX[1] = xo+1;
-    bodyY[1] = yo;
-    bodyX[2] = xo+2;
-    bodyY[2] = yo;
-
+    if(key_input == 'd'){
+      opposition_key = 'a';
+      body_len=3;
+      xo = 15;
+      yo = 15;
+      bodyX[1] = xo-1;
+      bodyY[1] = yo;
+      bodyX[2] = xo-2;
+      bodyY[2] = yo;
+    }
+    else{
+      body_len=3;
+      xo = 15;
+      yo = 15;
+      bodyX[1] = xo+1;
+      bodyY[1] = yo;
+      bodyX[2] = xo+2;
+      bodyY[2] = yo;
+    }
 
     GameScreen(stage_number);
     GrowthItem();
@@ -269,6 +280,7 @@ int main()
       numberOfgate+=2;
       timeseconds+=10;
     }
+    usleep(1000000);
 
     while(body_len<4){
 
@@ -293,7 +305,7 @@ int main()
 
     }
 
-    usleep(1000000);
+
   clear();
 
 
@@ -717,7 +729,7 @@ void EatG(){
 void PoisonP(){
   if(xo == poisonX && yo == poisonY)
   {
-    
+
     PoisonItem();
     body_len--;
     current_body_len--;
