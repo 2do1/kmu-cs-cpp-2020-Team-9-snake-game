@@ -103,6 +103,10 @@ int main()
     body_len=3;
     xo=15;
     yo = 15;
+    bodyX[1] = xo+1;
+    bodyY[1] = yo;
+    bodyX[2] = xo+2;
+    bodyY[2] = yo;
 
 
     GameScreen(k);
@@ -125,7 +129,6 @@ int main()
         if (k==3){stage4();}
 
         GameScreen(k);
-        usleep(tick);
         whileTimes += tick;
         if(whileTimes % 3000000 == 0){ // 와일문 20번 돌때마다 틱바꿔주기
           GrowthItem();
@@ -133,7 +136,9 @@ int main()
         }
 
     }
+
   clear();
+  usleep(1000000);
 
   }
   return 0;
@@ -317,9 +322,10 @@ void GameScreen(int x){
 
   //endwin();
 }
+
 void stage1(){ //1단계
 
-  WINDOW *backwin;
+
   WINDOW *win1;
 
   tick = 150000;
@@ -328,11 +334,7 @@ void stage1(){ //1단계
   wrefresh(win1);
   wbkgd(win1,COLOR_PAIR(1));
   wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-  backwin = newwin(32,34,9,22);
-  wrefresh(backwin);
-  wbkgd(backwin,COLOR_PAIR(4));
-  wattron(backwin,COLOR_PAIR(4));
-  wrefresh(backwin);
+  wborder(win1,'|','|','-','-','X','X','X','X');
 
 
   mvwprintw(win1, yo, xo, "0");
@@ -355,17 +357,17 @@ void stage1(){ //1단계
     }
   }
 
+
   wrefresh(win1);
   keypad(stdscr,TRUE);
   noecho();
   curs_set(0);
   delwin(win1);
-  delwin(backwin);
   endwin();
 }
 
 void stage2(){ //2단계
-  WINDOW *backwin;
+
   WINDOW *win1;
 
   tick = 150000;
@@ -374,13 +376,7 @@ void stage2(){ //2단계
   wrefresh(win1);
   wbkgd(win1,COLOR_PAIR(1));
   wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-  backwin = newwin(29,31,9,22);
-  wrefresh(backwin);
-  wbkgd(backwin,COLOR_PAIR(4));
-  wattron(backwin,COLOR_PAIR(4));
-  wrefresh(backwin);
-
-
+  wborder(win1,'|','|','-','-','X','X','X','X');
   mvwprintw(win1, yo, xo, "0");
   for(int i=0;i<27;i++){
     for(int j=0;j<27;j++){
@@ -401,17 +397,17 @@ void stage2(){ //2단계
     }
   }
 
+
   wrefresh(win1);
   keypad(stdscr,TRUE);
   noecho();
   curs_set(0);
   delwin(win1);
-  delwin(backwin);
   endwin();
 }
 
 void stage3(){ //1단계
-  WINDOW *backwin;
+
   WINDOW *win1;
 
   tick = 150000;
@@ -420,11 +416,7 @@ void stage3(){ //1단계
   wrefresh(win1);
   wbkgd(win1,COLOR_PAIR(1));
   wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-  backwin = newwin(26,28,9,22);
-  wrefresh(backwin);
-  wbkgd(backwin,COLOR_PAIR(4));
-  wattron(backwin,COLOR_PAIR(4));
-  wrefresh(backwin);
+
 
 
   mvwprintw(win1, yo, xo, "0");
@@ -446,18 +438,17 @@ void stage3(){ //1단계
       }
     }
   }
-
+  wborder(win1,'|','|','-','-','X','X','X','X');
   wrefresh(win1);
   keypad(stdscr,TRUE);
   noecho();
   curs_set(0);
   delwin(win1);
-  delwin(backwin);
   endwin();
 }
 
 void stage4(){ //1단계
-  WINDOW *backwin;
+
   WINDOW *win1;
 
   tick = 150000;
@@ -466,11 +457,7 @@ void stage4(){ //1단계
   wrefresh(win1);
   wbkgd(win1,COLOR_PAIR(1));
   wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-  backwin = newwin(23,25,9,22);
-  wrefresh(backwin);
-  wbkgd(backwin,COLOR_PAIR(4));
-  wattron(backwin,COLOR_PAIR(4));
-  wrefresh(backwin);
+
 
 
   mvwprintw(win1, yo, xo, "0");
@@ -492,13 +479,12 @@ void stage4(){ //1단계
       }
     }
   }
-
+  wborder(win1,'|','|','-','-','X','X','X','X');
   wrefresh(win1);
   keypad(stdscr,TRUE);
   noecho();
   curs_set(0);
   delwin(win1);
-  delwin(backwin);
   endwin();
 }
 
@@ -838,6 +824,7 @@ void NextStage(){
 
   getch();
   clear();
+  delwin(NextStage_window);
   endwin();
 
 }
