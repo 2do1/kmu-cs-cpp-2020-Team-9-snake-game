@@ -215,13 +215,8 @@ WINDOW *NextStage_window;
 
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen(int stage_number);
-void printPause();        // 게임화면
-
-//void score_board();
 
 void stage(int stage_num);
-               // stage1
-void pausebutton();         // 게임 중 p 버튼 누르면 함수 실행
 void EatG();
 void PoisonP();
 void GameOver();              // GameOver 화면 윈도우에 띄우기
@@ -541,128 +536,6 @@ void stage(int stage_num){ //1단계
 
 }
 
-void stage2(){ //2단계
-
-  WINDOW *win1;
-
-  tick = 150000;
-  initscr();
-  win1 = newwin(27,27,10,24);
-  wrefresh(win1);
-  wbkgd(win1,COLOR_PAIR(1));
-  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-  wborder(win1,'|','|','-','-','X','X','X','X');
-  mvwprintw(win1, yo, xo, "0");
-  for(int i=0;i<27;i++){
-    for(int j=0;j<27;j++){
-
-      for(int k = 1; k<body_len; k++){
-
-        if(growthX == j && growthY == i){
-          mvwprintw(win1, i, j, "G");
-        }
-        else if(poisonX == j && poisonY == i)
-        {
-          mvwprintw(win1, i, j, "P");
-        }
-        else if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "0");
-        }
-      }
-    }
-  }
-
-
-  wrefresh(win1);
-  keypad(stdscr,TRUE);
-  noecho();
-  curs_set(0);
-  delwin(win1);
-  endwin();
-}
-
-void stage3(){ //1단계
-
-  WINDOW *win1;
-
-  tick = 150000;
-  initscr();
-  win1 = newwin(24,24,10,24);
-  wrefresh(win1);
-  wbkgd(win1,COLOR_PAIR(1));
-  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-
-
-
-  mvwprintw(win1, yo, xo, "0");
-  for(int i=0;i<(23);i++){
-    for(int j=0;j<(23);j++){
-
-      for(int k = 1; k<body_len; k++){
-
-        if(growthX == j && growthY == i){
-          mvwprintw(win1, i, j, "G");
-        }
-        else if(poisonX == j && poisonY == i)
-        {
-          mvwprintw(win1, i, j, "P");
-        }
-        else if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "0");
-        }
-      }
-    }
-  }
-  wborder(win1,'|','|','-','-','X','X','X','X');
-  wrefresh(win1);
-  keypad(stdscr,TRUE);
-  noecho();
-  curs_set(0);
-  delwin(win1);
-  endwin();
-}
-
-void stage4(){ //1단계
-
-  WINDOW *win1;
-
-  tick = 150000;
-  initscr();
-  win1 = newwin(21,21,10,24);
-  wrefresh(win1);
-  wbkgd(win1,COLOR_PAIR(1));
-  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-
-
-
-  mvwprintw(win1, yo, xo, "0");
-  for(int i=0;i<20;i++){
-    for(int j=0;j<20;j++){
-
-      for(int k = 1; k<body_len; k++){
-
-        if(growthX == j && growthY == i){
-          mvwprintw(win1, i, j, "G");
-        }
-        else if(poisonX == j && poisonY == i)
-        {
-          mvwprintw(win1, i, j, "P");
-        }
-        else if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "0");
-        }
-      }
-    }
-  }
-  wborder(win1,'|','|','-','-','X','X','X','X');
-  wrefresh(win1);
-  keypad(stdscr,TRUE);
-  noecho();
-  curs_set(0);
-  delwin(win1);
-  endwin();
-}
-
 
 
 
@@ -764,10 +637,6 @@ void keyinput(int stage_num, char key){
     exit(0);
   }
 
-  else if(key =='p'){
-    printPause();
-
-  }
   else if(key =='w' || key =='a' || key =='s'||key =='d'){
     for(int i = 0; i<body_len; i++){
       tmp2X = bodyX[i];
@@ -834,96 +703,6 @@ void keyinput(int stage_num, char key){
   }
 
 
-}
-
-// 수정해야 할 부분?:p 를 누르면 단순 내용 출력이 아닌 게임이 stop 되어야 함
-void pausebutton(){
-  char key_input3=' ';       // 키 입력
-  do{
-  attrset(A_BOLD);
-  mvprintw(22,20,"<Pause : Press ANY button TO RESUME>");
-}while(key_input3==getch());
-  //clear();  // 특정 줄을 지우는 법을 몰라서 이렇게 했는데, 한템포 락 걸린다..--보완할 점
-  //reset();
-  return;
-}
-
-void printPause(){
-
-  WINDOW *w;
-  char list[3][20] = { "    RESUME    ", "    RESTART   ", "     Quit     "};
-  char item[20];
-  int ch, i =30, width = 60;
-
-  initscr();
-  w = newwin( 11, 33, 18, 45 );
-  init_pair(6, COLOR_BLACK, COLOR_WHITE);
-  wbkgd(w,COLOR_PAIR(6));
-  wattron(w,COLOR_PAIR(6));
-  wrefresh(w);
-
-  box( w, 0, 0 );
-  wrefresh(w);
-
-
-  for( i=0; i<3; i++ ) {
-     if( i == 0 )
-         wattron( w, A_STANDOUT ); // highlights the first item.
-     else
-         wattroff( w, A_STANDOUT );
-     sprintf(item, "%-7s",  list[i]);
-     mvwprintw( w, i+6, 9, "%s", item );
-   }
-
-  mvwprintw( w,1,3,"   ___   _   _ __  ___  ___" );
-  mvwprintw( w,2,3,"  / o |.' \\ /// /,' _/ / _/" );
-  mvwprintw( w,3,3," / _,'/ o // U /_\\ `. / _/ " );
-  mvwprintw( w,4,3,"/_/  /_n_/ \\_,'/___,'/___/ " );
-
-  wrefresh( w );
-
-  i = 0;
-  noecho();
-  keypad( w, TRUE );
-  curs_set( 0 );
-
-  ch=getch();
-  while(( ch = wgetch(w)) != '\n'){
-
-
-          sprintf(item, "%-7s",  list[i]);
-          mvwprintw( w, i+6, 9, "%s", item );
-
-          switch( ch ) {
-             case 'w':
-                         i--;
-                         i = ( i<0 ) ? 2 : i;
-                         break;
-             case 's':
-                         i++;
-                         i = ( i>2 ) ? 0 : i;
-                         break;
-           }
-           // now highlight the next item in the list.
-         wattron( w, A_STANDOUT );
-
-         sprintf(item, "%-7s",  list[i]);
-         mvwprintw( w, i+6, 9, "%s", item);
-         wattroff( w, A_STANDOUT );
- }
-
-  getch();
-  delwin(w);
-  endwin();
-/**
-  if (i==1){
-     reset();
-  }
-  if (i==2){
-     startScreen();
-  }
-**/
-return;
 }
 
 
