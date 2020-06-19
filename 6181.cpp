@@ -229,6 +229,7 @@ void keyinput(int stage_num, char key);
 void GrowthItem();
 void PoisonItem();
 void NextStage();
+void Success();
 
 int main()
 {
@@ -307,10 +308,14 @@ int main()
         }
 
     }
-    NextStage();
+    if (stage_number==3){
+      Success();
+    }
+    else{
+      NextStage();
+    }
+
     clear();
-
-
 
   }
   return 0;
@@ -991,6 +996,26 @@ void NextStage(){
   mvprintw(26,25,"                                                              /\\____/ ");
   mvprintw(27,25,"                                                              \\_/__/ ");
   wrefresh(NextStage_window);
+
+  getch();
+  clear();
+  endwin();
+
+}
+
+void Success(){
+
+
+  initscr();
+  WINDOW *success;
+  success = newwin(25,43,5,5);
+  wborder(success,'|','|','-','-','+','+','+','+');
+
+
+
+  attrset(A_BOLD);
+  mvprintw(11,25,"success");
+  wrefresh(success);
 
   getch();
   clear();
