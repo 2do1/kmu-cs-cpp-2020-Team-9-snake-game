@@ -53,7 +53,7 @@ int poisonX, poisonY;
 int Growth_Item = 2;
 int Poison_Item = 8;
 int numberOfgate = 3;
-int timeseconds = 30;
+int timeseconds = 10;
 
 int current_body_len = 3;
 int current_Growth_Item = 0;
@@ -104,7 +104,7 @@ int map[4][32][32] =
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -135,7 +135,7 @@ int map[4][32][32] =
 {
 {2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2},
 {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -170,31 +170,31 @@ int map[4][32][32] =
 {2, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 2},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+   {1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-   {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
+   {1, 0, 0, 0, 1, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 0, 0, 1},
    {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
 {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -213,16 +213,10 @@ WINDOW *win4;
 WINDOW *win5;
 WINDOW *NextStage_window;
 
-
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen(int stage_number);
-void printPause();        // 게임화면
-
-//void score_board();
 
 void stage(int stage_num);
-               // stage1
-void pausebutton();         // 게임 중 p 버튼 누르면 함수 실행
 void EatG();
 void PoisonP();
 void GameOver();              // GameOver 화면 윈도우에 띄우기
@@ -230,11 +224,12 @@ void keyinput(int stage_num, char key);
 void GrowthItem();
 void PoisonItem();
 void NextStage();
+void Success();
 
 int main()
 {
   int stage_number = 0;
-  //NextStage();
+
   tick = 0;
   std::srand(static_cast<int>(std::time(0))); // 현재시간을랜덤해서 seed 로 준다.
   int whileTimes = 0;
@@ -246,6 +241,7 @@ int main()
   bodyY[2] = yo;
   //printPause();
   setlocale(LC_ALL,"");
+  //NextStage();
   startScreen();
 
 
@@ -283,14 +279,13 @@ int main()
       Growth_Item+=2;
       //Poison_Item+=2;
       numberOfgate+=2;
-      timeseconds+=10;
+      timeseconds+=20;
     }
     usleep(1000000);
 
     while(gameOver==false){
-        current_timeseconds=0.0;
-        current_timeseconds = ((double)whileTimes/1500000.0000);
 
+        current_timeseconds = ((double)whileTimes/1000000.0000);
         if(kbhit()){
           key_input = getch();
         }
@@ -298,12 +293,12 @@ int main()
         keyinput(stage_number, key_input);  //xo, yo 값 바꿔줌, body위치 재설정
         EatG(); //뱀의 머리가 닿으면 G가 다른위치로 바뀌고 길이 늘려주기
         PoisonP();
-
-        if(stage_number==0 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>10) gameOver=true;
-        if(stage_number==1 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>40) gameOver=true;
-        if(stage_number==2 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>50) gameOver=true;
-        if(stage_number==3 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>60) gameOver=true;
+        if(stage_number==0 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>timeseconds) gameOver=true;
+        if(stage_number==1 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>timeseconds) gameOver=true;
+        if(stage_number==2 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>timeseconds) gameOver=true;
+        if(stage_number==3 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>timeseconds) gameOver=true;
         stage(stage_number);
+
 
         GameScreen(stage_number);
         usleep(tick);
@@ -312,14 +307,16 @@ int main()
           GrowthItem();
           PoisonItem();
         }
-        //NextStage();
-        //clear();
+
+    }
+    if (stage_number==3){
+      Success();
+    }
+    else{
+      NextStage();
     }
 
-
-
-  clear();
-
+    clear();
 
   }
   return 0;
@@ -467,7 +464,7 @@ void GameScreen(int x){
   mvwprintw(win3,11,10,"seconds:     ");       // 게임시작 후 몇초만 지나면 통과 : stage1 에서는 30초
   mvwprintw(win3,11,18," 합산");
   mvwprintw(win3,11,24,"%d",timeseconds);
-  mvwprintw(win3,11,27,"초는 버티세요!");
+  mvwprintw(win3,11,26,"초는 버티세요!");
   wborder(win3,'|','|','-','-','X','X','X','X');
   wrefresh(win3);
 
@@ -544,128 +541,7 @@ void stage(int stage_num){ //1단계
   curs_set(0);
   delwin(win1);
   endwin();
-}
 
-void stage2(){ //2단계
-
-  WINDOW *win1;
-
-  tick = 150000;
-  initscr();
-  win1 = newwin(27,27,10,24);
-  wrefresh(win1);
-  wbkgd(win1,COLOR_PAIR(1));
-  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-  wborder(win1,'|','|','-','-','X','X','X','X');
-  mvwprintw(win1, yo, xo, "0");
-  for(int i=0;i<27;i++){
-    for(int j=0;j<27;j++){
-
-      for(int k = 1; k<body_len; k++){
-
-        if(growthX == j && growthY == i){
-          mvwprintw(win1, i, j, "G");
-        }
-        else if(poisonX == j && poisonY == i)
-        {
-          mvwprintw(win1, i, j, "P");
-        }
-        else if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "0");
-        }
-      }
-    }
-  }
-
-
-  wrefresh(win1);
-  keypad(stdscr,TRUE);
-  noecho();
-  curs_set(0);
-  delwin(win1);
-  endwin();
-}
-
-void stage3(){ //1단계
-
-  WINDOW *win1;
-
-  tick = 150000;
-  initscr();
-  win1 = newwin(24,24,10,24);
-  wrefresh(win1);
-  wbkgd(win1,COLOR_PAIR(1));
-  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-
-
-
-  mvwprintw(win1, yo, xo, "0");
-  for(int i=0;i<(23);i++){
-    for(int j=0;j<(23);j++){
-
-      for(int k = 1; k<body_len; k++){
-
-        if(growthX == j && growthY == i){
-          mvwprintw(win1, i, j, "G");
-        }
-        else if(poisonX == j && poisonY == i)
-        {
-          mvwprintw(win1, i, j, "P");
-        }
-        else if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "0");
-        }
-      }
-    }
-  }
-  wborder(win1,'|','|','-','-','X','X','X','X');
-  wrefresh(win1);
-  keypad(stdscr,TRUE);
-  noecho();
-  curs_set(0);
-  delwin(win1);
-  endwin();
-}
-
-void stage4(){ //1단계
-
-  WINDOW *win1;
-
-  tick = 150000;
-  initscr();
-  win1 = newwin(21,21,10,24);
-  wrefresh(win1);
-  wbkgd(win1,COLOR_PAIR(1));
-  wattron(win1,COLOR_PAIR(2)); // game ttle, snake color
-
-
-
-  mvwprintw(win1, yo, xo, "0");
-  for(int i=0;i<20;i++){
-    for(int j=0;j<20;j++){
-
-      for(int k = 1; k<body_len; k++){
-
-        if(growthX == j && growthY == i){
-          mvwprintw(win1, i, j, "G");
-        }
-        else if(poisonX == j && poisonY == i)
-        {
-          mvwprintw(win1, i, j, "P");
-        }
-        else if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "0");
-        }
-      }
-    }
-  }
-  wborder(win1,'|','|','-','-','X','X','X','X');
-  wrefresh(win1);
-  keypad(stdscr,TRUE);
-  noecho();
-  curs_set(0);
-  delwin(win1);
-  endwin();
 }
 
 
@@ -674,7 +550,6 @@ void stage4(){ //1단계
 
 void GrowthItem()
 {
-
   int crush = 0;
   while(1)
   {
@@ -771,10 +646,6 @@ void keyinput(int stage_num, char key){
     exit(0);
   }
 
-  else if(key =='p'){
-    printPause();
-
-  }
   else if(key =='w' || key =='a' || key =='s'||key =='d'){
     for(int i = 0; i<body_len; i++){
       tmp2X = bodyX[i];
@@ -843,96 +714,6 @@ void keyinput(int stage_num, char key){
 
 }
 
-// 수정해야 할 부분?:p 를 누르면 단순 내용 출력이 아닌 게임이 stop 되어야 함
-void pausebutton(){
-  char key_input3=' ';       // 키 입력
-  do{
-  attrset(A_BOLD);
-  mvprintw(22,20,"<Pause : Press ANY button TO RESUME>");
-}while(key_input3==getch());
-  //clear();  // 특정 줄을 지우는 법을 몰라서 이렇게 했는데, 한템포 락 걸린다..--보완할 점
-  //reset();
-  return;
-}
-
-void printPause(){
-
-  WINDOW *w;
-  char list[3][20] = { "    RESUME    ", "    RESTART   ", "     Quit     "};
-  char item[20];
-  int ch, i =30, width = 60;
-
-  initscr();
-  w = newwin( 11, 33, 18, 45 );
-  init_pair(6, COLOR_BLACK, COLOR_WHITE);
-  wbkgd(w,COLOR_PAIR(6));
-  wattron(w,COLOR_PAIR(6));
-  wrefresh(w);
-
-  box( w, 0, 0 );
-  wrefresh(w);
-
-
-  for( i=0; i<3; i++ ) {
-     if( i == 0 )
-         wattron( w, A_STANDOUT ); // highlights the first item.
-     else
-         wattroff( w, A_STANDOUT );
-     sprintf(item, "%-7s",  list[i]);
-     mvwprintw( w, i+6, 9, "%s", item );
-   }
-
-  mvwprintw( w,1,3,"   ___   _   _ __  ___  ___" );
-  mvwprintw( w,2,3,"  / o |.' \\ /// /,' _/ / _/" );
-  mvwprintw( w,3,3," / _,'/ o // U /_\\ `. / _/ " );
-  mvwprintw( w,4,3,"/_/  /_n_/ \\_,'/___,'/___/ " );
-
-  wrefresh( w );
-
-  i = 0;
-  noecho();
-  keypad( w, TRUE );
-  curs_set( 0 );
-
-  ch=getch();
-  while(( ch = wgetch(w)) != '\n'){
-
-
-          sprintf(item, "%-7s",  list[i]);
-          mvwprintw( w, i+6, 9, "%s", item );
-
-          switch( ch ) {
-             case 'w':
-                         i--;
-                         i = ( i<0 ) ? 2 : i;
-                         break;
-             case 's':
-                         i++;
-                         i = ( i>2 ) ? 0 : i;
-                         break;
-           }
-           // now highlight the next item in the list.
-         wattron( w, A_STANDOUT );
-
-         sprintf(item, "%-7s",  list[i]);
-         mvwprintw( w, i+6, 9, "%s", item);
-         wattroff( w, A_STANDOUT );
- }
-
-  getch();
-  delwin(w);
-  endwin();
-/**
-  if (i==1){
-     reset();
-  }
-  if (i==2){
-     startScreen();
-  }
-**/
-return;
-}
-
 
 void GameOver(){
   clear();
@@ -977,18 +758,13 @@ void GameOver(){
 
 void NextStage(){
 
+
   initscr();
-  WINDOW *NextStage_window;   // 게임오버  윈도우
 
-  start_color();
-  init_pair(1, COLOR_GREEN,COLOR_BLACK);
-  init_pair(2, COLOR_RED,COLOR_WHITE);
   wborder(NextStage_window,'|','|','-','-','+','+','+','+');
-  NextStage_window= newwin(25,43,5,5);
+  NextStage_window = newwin(25,43,5,5);
 
-  //NextStage_window= newwin(25,43,5,5);
-  //wbkgd(NextStage_window,COLOR_PAIR(2));
-  //wattron(NextStage_window,COLOR_PAIR(2));
+
   attrset(A_BOLD);
   mvprintw(11,25," ____");
   mvprintw(12,25,"/\\  _`\\     ");
@@ -1007,13 +783,30 @@ void NextStage(){
   mvprintw(25,25,"    \\/_/\\/_/\\/____/\\//\\/_/  \\/__/     \\/_____/\\/__/\\/__/\\/_/\\/___L\\ \\/____/");
   mvprintw(26,25,"                                                              /\\____/ ");
   mvprintw(27,25,"                                                              \\_/__/ ");
-
-
   wrefresh(NextStage_window);
 
   getch();
   clear();
-  delwin(NextStage_window);
+  endwin();
+
+}
+
+void Success(){
+
+
+  initscr();
+  WINDOW *success;
+  success = newwin(25,43,5,5);
+  wborder(success,'|','|','-','-','+','+','+','+');
+
+
+
+  attrset(A_BOLD);
+  mvprintw(11,25,"success");
+  wrefresh(success);
+
+  getch();
+  clear();
   endwin();
 
 }
