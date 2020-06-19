@@ -211,6 +211,7 @@ WINDOW *win2;
 WINDOW *win3;
 WINDOW *win4;
 WINDOW *win5;
+WINDOW *NextStage_window;
 
 void startScreen();          // 맨 처음 시작 화면
 void GameScreen(int stage_number);
@@ -232,7 +233,7 @@ void NextStage();
 int main()
 {
   int stage_number = 0;
-  //NextStage();
+
   tick = 0;
   std::srand(static_cast<int>(std::time(0))); // 현재시간을랜덤해서 seed 로 준다.
   int whileTimes = 0;
@@ -244,6 +245,7 @@ int main()
   bodyY[2] = yo;
   //printPause();
   setlocale(LC_ALL,"");
+  //NextStage();
   startScreen();
 
 
@@ -295,6 +297,7 @@ int main()
 
         stage(stage_number);
 
+
         GameScreen(stage_number);
         usleep(tick);
         whileTimes += tick;
@@ -304,9 +307,9 @@ int main()
         }
 
     }
+    NextStage();
+    clear();
 
-
-  clear();
 
 
   }
@@ -530,6 +533,7 @@ void stage(int stage_num){ //1단계
   curs_set(0);
   delwin(win1);
   endwin();
+
 }
 
 void stage2(){ //2단계
@@ -961,18 +965,13 @@ void GameOver(){
 
 void NextStage(){
 
+
   initscr();
-  WINDOW *NextStage_window;   // 게임오버  윈도우
 
-  start_color();
-  init_pair(1, COLOR_GREEN,COLOR_BLACK);
-  init_pair(2, COLOR_RED,COLOR_WHITE);
   wborder(NextStage_window,'|','|','-','-','+','+','+','+');
+  NextStage_window = newwin(25,43,5,5);
 
 
-  NextStage_window= newwin(25,43,5,5);
-  wbkgd(NextStage_window,COLOR_PAIR(2));
-  wattron(NextStage_window,COLOR_PAIR(2));
   attrset(A_BOLD);
   mvprintw(11,25," ____");
   mvprintw(12,25,"/\\  _`\\     ");
@@ -991,13 +990,10 @@ void NextStage(){
   mvprintw(25,25,"    \\/_/\\/_/\\/____/\\//\\/_/  \\/__/     \\/_____/\\/__/\\/__/\\/_/\\/___L\\ \\/____/");
   mvprintw(26,25,"                                                              /\\____/ ");
   mvprintw(27,25,"                                                              \\_/__/ ");
-
-
-
+  wrefresh(NextStage_window);
 
   getch();
   clear();
-  delwin(NextStage_window);
   endwin();
 
 }
