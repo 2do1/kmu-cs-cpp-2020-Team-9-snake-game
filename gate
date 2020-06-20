@@ -310,6 +310,7 @@ int main()
         GameScreen(stage_number);
         usleep(tick);
         whileTimes += tick;
+        if(current_timeseconds>=7.0 && whileTimes % 15000000 == 0 )MakeGate(stage_number);
         if(whileTimes % 3000000 == 0){ // 와일문 20번 돌때마다 틱바꿔주기
           GrowthItem();
           PoisonItem();
@@ -827,7 +828,7 @@ void Success(double current_timeseconds){
 
 void MakeGate(int stage_number){
 
-  vector <vector<int>> temp;
+  vector <vector<int> > temp;
 
   for(int i=0; i<32;i++){
     for(int j=0; j<32; j++){
