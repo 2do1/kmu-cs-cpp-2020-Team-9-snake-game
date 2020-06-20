@@ -310,7 +310,7 @@ int main()
         GameScreen(stage_number);
         usleep(tick);
         whileTimes += tick;
-        if(current_timeseconds>=7.0 && whileTimes % 15000000 == 0 )MakeGate(stage_number);
+        if(current_timeseconds>=7.0 && whileTimes % 15000000 == 0 ) MakeGate(stage_number);
         if(whileTimes % 3000000 == 0){ // 와일문 20번 돌때마다 틱바꿔주기
           GrowthItem();
           PoisonItem();
@@ -524,9 +524,12 @@ void stage(int stage_num){ //1단계
   for(int i=0;i<32;i++){
     for(int j=0;j<32;j++){
       if(map[stage_num][i][j] == 2)mvwprintw(win1,i, j, "*" );
-      else if(map[stage_num][i][j] == 1)mvwprintw(win1,i, j, "+" );
-      if(gate1_x==j && gate1_y==i && current_timeseconds>=7.0){ mvwprintw(win1, i,j, "X");}
-      if(gate2_x==j&& gate2_y==i && current_timeseconds>=7.0){ mvwprintw(win1, i,j, "X");}
+      else if ((map[stage_num][i][j] == 1) || (map[stage_num][i][j] == 3 )){
+
+        mvwprintw(win1,i, j, "+" );
+
+      }
+      if(map[stage_num][i][j] == 3 && current_timeseconds>=7.0){mvwprintw(win1, i,j, "X");}
 
       for(int k = 1; k<body_len; k++){
 
@@ -832,6 +835,9 @@ void MakeGate(int stage_number){
 
   for(int i=0; i<32;i++){
     for(int j=0; j<32; j++){
+      if(map[stage_number][i][j]==3){
+        map[stage_number][i][j]=1;
+      }
       if(map[stage_number][i][j]==1){
         vector<int> temp1;
 
@@ -841,6 +847,7 @@ void MakeGate(int stage_number){
         temp.push_back(temp1);
 
       }
+
     }
   }
 
@@ -857,7 +864,9 @@ void MakeGate(int stage_number){
 
   gate1_x = temp[gate1][0];
   gate1_y = temp[gate1][1];
+  map[stage_number][gate1_x][gate1_y]=3;
 
   gate2_x = temp[gate2][0];
   gate2_y= temp[gate2][1];
+  map[stage_number][gate2_x][gate2_y]=3;
 }
