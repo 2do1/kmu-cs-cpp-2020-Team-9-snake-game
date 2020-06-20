@@ -66,7 +66,7 @@ int current_Poison_Item = 0;
 int current_numberOfgate = 0;
 double current_timeseconds = 0.0;
 
-int direction[4][2] = { {1, 0}, {0, 1}, {-1, 0}, {0, -1} };
+int direction[5][2] = { {1, 0}, {0, 1}, {-1, 0}, {0, -1}, {1, 0} };
 
 
 int map[4][32][32] =
@@ -891,7 +891,9 @@ void MakeGate(int stage_number){
 
 
 void Gate(int stage_num, int direct)
-{ if(direct == -1){}
+{ if(direct == -1){
+
+}
   else if(direct / 4 == 0)
   {
     while(1)
@@ -907,7 +909,7 @@ void Gate(int stage_num, int direct)
         }
         continue;
       }
-      else if(map[stage_num][gate2_x+dirX][gate2_y+dirY] == 1|| map[stage_num][gate2_x+dirX][gate2_y+dirY] == 2)
+      else if(map[stage_num][gate2_x+dirX][gate2_y+dirY] == 1|| map[stage_num][gate2_x+dirX][gate2_y+dirY] == 2|| map[stage_num][gate2_x+dirX][gate2_y+dirY] == 3 )
       {
         direct++;
         if(direct == 4)
@@ -922,15 +924,19 @@ void Gate(int stage_num, int direct)
         yo = gate2_y + dirY;
         if(direct ==0){
           key_input = 'd';
+          opposition_key = 'a';
         }
         else if(direct == 1){
           key_input = 's';
+          opposition_key = 'w';
         }
         else if(direct == 2){
           key_input = 'a';
+          opposition_key = 'd';
         }
         else if(direct == 3){
           key_input = 'w';
+          opposition_key = 's';
         }
         break;
       }
@@ -952,7 +958,7 @@ void Gate(int stage_num, int direct)
         continue;
 
       }
-      else if(map[stage_num][gate1_x+dirX][gate1_y+dirY] == 1|| map[stage_num][gate1_x+dirX][gate1_y+dirY] == 2 )
+      else if(map[stage_num][gate1_x+dirX][gate1_y+dirY] == 1|| map[stage_num][gate1_x+dirX][gate1_y+dirY] == 2||map[stage_num][gate1_x+dirX][gate1_y+dirY] == 3 )
       {
         direct++;
         if(direct == 4)
@@ -967,15 +973,19 @@ void Gate(int stage_num, int direct)
         yo = gate1_y + dirY;
         if(direct ==0){
           key_input = 'd';
+          opposition_key = 'a';
         }
         else if(direct == 1){
           key_input = 's';
+          opposition_key = 'w';
         }
         else if(direct == 2){
           key_input = 'a';
+          opposition_key = 'd';
         }
         else if(direct == 3){
           key_input = 'w';
+          opposition_key = 's';
         }
         break;
       }
@@ -985,17 +995,17 @@ void Gate(int stage_num, int direct)
 
 int HeadPosition(){
   if( xo == gate1_x && yo == gate1_y){
-    if( bodyX[1]==gate1_x && bodyY[1]==gate1_y-1) return 0;  // 진행방향 오른쪽
-    else if( bodyX[1]==gate1_x-1 && bodyY[1]==gate1_y) return 1;   // 진행 방향 아래
-    else if( bodyX[1]==gate1_x && bodyY[1]==gate1_y+1) return 2;   // 진행 방향 왼쪽
-    else if( bodyX[1]==gate1_x+1 && bodyY[1]==gate1_y) return 3;   // 진행 방향 위쪽
+    if( bodyX[1]==gate1_x-1 && bodyY[1]==gate1_y) return 0;  // 진행방향 오른쪽
+    else if( bodyX[1]==gate1_x && bodyY[1]==gate1_y-1) return 1;   // 진행 방향 아래
+    else if( bodyX[1]==gate1_x+1 && bodyY[1]==gate1_y) return 2;   // 진행 방향 왼쪽
+    else if( bodyX[1]==gate1_x && bodyY[1]==gate1_y+1) return 3;   // 진행 방향 위쪽
     else{ return -1;}
   }
   else if( xo == gate2_x && yo == gate2_y){
-    if( bodyX[1]==gate2_x && bodyY[1]==gate2_y-1) return 4;  // 진행방향 오른쪽
-    else if( bodyX[1]==gate2_x-1 && bodyY[1]==gate2_y) return 5;   // 진행 방향 아래
-    else if( bodyX[1]==gate2_x && bodyY[1]==gate2_y+1) return 6;   // 진행 방향 왼쪽
-    else if( bodyX[1]==gate2_x+1 && bodyY[1]==gate2_y) return 7;   // 진행 방향 위쪽
+    if( bodyX[1]==gate2_x-1 && bodyY[1]==gate2_y) return 4;  // 진행방향 오른쪽
+    else if( bodyX[1]==gate2_x && bodyY[1]==gate2_y-1) return 5;   // 진행 방향 아래
+    else if( bodyX[1]==gate2_x+1 && bodyY[1]==gate2_y) return 6;   // 진행 방향 왼쪽
+    else if( bodyX[1]==gate2_x && bodyY[1]==gate2_y+1) return 7;   // 진행 방향 위쪽
     else{ return -1;}
     }
   else{return -1;}
