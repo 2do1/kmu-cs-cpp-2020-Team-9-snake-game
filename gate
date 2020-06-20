@@ -313,7 +313,6 @@ int main()
         if(whileTimes % 3000000 == 0){ // 와일문 20번 돌때마다 틱바꿔주기
           GrowthItem();
           PoisonItem();
-          MakeGate(stage_number);
         }
 
     }
@@ -525,6 +524,8 @@ void stage(int stage_num){ //1단계
     for(int j=0;j<32;j++){
       if(map[stage_num][i][j] == 2)mvwprintw(win1,i, j, "*" );
       else if(map[stage_num][i][j] == 1)mvwprintw(win1,i, j, "+" );
+      if(gate1_x==j && gate1_y==i && current_timeseconds>=7.0){ mvwprintw(win1, i,j, "X");}
+      if(gate2_x==j&& gate2_y==i && current_timeseconds>=7.0){ mvwprintw(win1, i,j, "X");}
 
       for(int k = 1; k<body_len; k++){
 
@@ -538,13 +539,7 @@ void stage(int stage_num){ //1단계
         else if(bodyX[k] == j && bodyY[k] == i){
             mvwprintw(win1, i, j, "0");
         }
-        else if(gate1_x==j && gate1_y==i){
-          mvwprintw(win1, i,j, "X");
 
-        }
-        else if(gate2_x==j&& gate2_y==i){
-          mvwprintw(win1, i,j, "X");
-        }
       }
     }
   }
@@ -861,7 +856,7 @@ void MakeGate(int stage_number){
 
   gate1_x = temp[gate1][0];
   gate1_y = temp[gate1][1];
-  
+
   gate2_x = temp[gate2][0];
   gate2_y= temp[gate2][1];
 }
