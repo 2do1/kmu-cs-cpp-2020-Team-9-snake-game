@@ -224,12 +224,12 @@ void startScreen();          // 맨 처음 시작 화면
 void GameScreen(int stage_number);
 
 void stage(int stage_num);
-void EatG();
-void PoisonP();
+void EatG(int stage_num);
+void PoisonP(int stage_num);
 void GameOver();              // GameOver 화면 윈도우에 띄우기
 void keyinput(int stage_num, char key);
-void GrowthItem();
-void PoisonItem();
+void GrowthItem(int stage_num);
+void PoisonItem(int stage_num);
 void MakeGate(int stage_number);
 int HeadPosition();
 void Gate(int stage_num, int direct);
@@ -278,8 +278,8 @@ int main()
     }
 
     GameScreen(stage_number);
-    GrowthItem();
-    PoisonItem();
+    GrowthItem(stage_number);
+    PoisonItem(stage_number);
     MakeGate(stage_number);
     if(stage_number != 0){
 
@@ -302,9 +302,10 @@ int main()
         }
 
         keyinput(stage_number, key_input);  //xo, yo 값 바꿔줌, body위치 재설정
-        EatG(); //뱀의 머리가 닿으면 G가 다른위치로 바뀌고 길이 늘려주기
-        PoisonP();
+        EatG(stage_number); //뱀의 머리가 닿으면 G가 다른위치로 바뀌고 길이 늘려주기
+        PoisonP(stage_number);
         Gate(stage_number, HeadPosition());
+
         if(stage_number==0 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>timeseconds) gameOver=true;
         if(stage_number==1 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>timeseconds) gameOver=true;
         if(stage_number==2 && current_body_len >= mission_body_len && current_Growth_Item>=2 && current_timeseconds>timeseconds) gameOver=true;
@@ -317,8 +318,8 @@ int main()
         whileTimes += tick;
         if(current_timeseconds>=7.0 && whileTimes % 15000000 == 0 ) MakeGate(stage_number);
         if(whileTimes % 3000000 == 0){ // 와일문 20번 돌때마다 틱바꿔주기
-          GrowthItem();
-          PoisonItem();
+          GrowthItem(stage_number);
+          PoisonItem(stage_number);
         }
 
     }
@@ -570,13 +571,13 @@ void stage(int stage_num){ //1단계
 
 
 
-void GrowthItem()
+void GrowthItem(int stage_num)
 {
   int crush = 0;
   while(1)
   {
-    growthX = (rand()%28) + 1;
-    growthY = (rand()%28) + 1;
+    growthX = (rand()%30) + 1;
+    growthY = (rand()%30) + 1;
     for(int i = 0; i < body_len; i++)
     {
       if(growthX == bodyX[i] && growthY == bodyY[i])
@@ -585,6 +586,7 @@ void GrowthItem()
         break;
       }
     }
+    if(map[stage_num][growthY][growthX] == 1 ||map[stage_num][growthY][growthX] == 3)crush++;
 
     if(crush == 1)
     {
@@ -599,7 +601,7 @@ void GrowthItem()
   }
 }
 
-void PoisonItem()
+void PoisonItem(int stage_num)
 {
   int crush = 0;
   while(1)
@@ -613,6 +615,7 @@ void PoisonItem()
         crush++;
         break;
       }
+      if(map[stage_num][poisonY][poisonX] == 1|| map[stage_num][poisonY][poisonX] == 3){crush++;}
     }
 
     if(crush == 1)
@@ -627,10 +630,10 @@ void PoisonItem()
   }
 }
 
-void EatG(){
+void EatG(int stage_num){
   if(xo == growthX && yo == growthY)
   {
-    GrowthItem();
+    GrowthItem(stage_num);
     body_len++;
     current_body_len++;
     current_Growth_Item++;
@@ -639,11 +642,11 @@ void EatG(){
   }
 }
 
-void PoisonP(){
+void PoisonP(int stage_num){
   if(xo == poisonX && yo == poisonY)
   {
 
-    PoisonItem();
+    PoisonItem(stage_num);
     body_len--;
     current_body_len--;
     bodyX[body_len-1] = 0;
@@ -685,31 +688,27 @@ void keyinput(int stage_num, char key){
       GameOver();
     }
     else{
-      int way ;
+
       switch(key){
 
         case 'w'://up
           yo--;
           opposition_key = 's';  //opposition_key 재설정
-          way = 3;
           break;
 
         case 'a'://left
           xo--;
           opposition_key = 'd';
-          way = 2;
           break;
 
         case 'd'://right
           xo++;
           opposition_key = 'a';
-          way = 0;
           break;
 
         case 's': //down
           yo++;
           opposition_key = 'w';
-          way = 1;
           break;
 
         default:
@@ -901,7 +900,7 @@ void Gate(int stage_num, int direct)
       int dirX = direction[direct][0];
       int dirY = direction[direct][1];
 
-      if(map[stage_num][gate2_x+dirX][gate2_y+dirY] == 1)
+      if(map[stage_num][gate2_x+dirX][gate2_y+dirY] == 1|| map[stage_num][gate2_x+dirX][gate2_y+dirY] == 2 || gate2_x+dirX<0 ||gate2_y+dirY <0|| gate2_x+dirX >31||gate2_y+dirY>31)
       {
         direct++;
         if(direct == 4)
@@ -914,6 +913,18 @@ void Gate(int stage_num, int direct)
       {
         xo = gate2_x + dirX;
         yo = gate2_y + dirY;
+        if(direct ==0){
+          key_input = 'd';
+        }
+        else if(direct == 1){
+          key_input = 's';
+        }
+        else if(direct == 2){
+          key_input = 'a';
+        }
+        else if(direct == 3){
+          key_input = 'w';
+        }
         break;
       }
     }
@@ -926,7 +937,7 @@ void Gate(int stage_num, int direct)
       int dirX = direction[direct][0];
       int dirY = direction[direct][1];
 
-      if(map[stage_num][gate1_y+dirY][gate1_x+dirX] == 1)
+      if(map[stage_num][gate1_x+dirX][gate1_y+dirY] == 1|| map[stage_num][gate1_x+dirX][gate1_y+dirY] == 2 || gate1_x+dirX<0 ||gate1_y+dirY <0|| gate1_x+dirX >31||gate1_y+dirY>31)
       {
         direct++;
         if(direct == 4)
@@ -939,6 +950,18 @@ void Gate(int stage_num, int direct)
       {
         xo = gate1_x + dirX;
         yo = gate1_y + dirY;
+        if(direct ==0){
+          key_input = 'd';
+        }
+        else if(direct == 1){
+          key_input = 's';
+        }
+        else if(direct == 2){
+          key_input = 'a';
+        }
+        else if(direct == 3){
+          key_input = 'w';
+        }
         break;
       }
     }
