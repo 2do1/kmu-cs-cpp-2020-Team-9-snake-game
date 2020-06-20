@@ -899,8 +899,15 @@ void Gate(int stage_num, int direct)
       direct %= 4;
       int dirX = direction[direct][0];
       int dirY = direction[direct][1];
-
-      if(map[stage_num][gate2_x+dirX][gate2_y+dirY] == 1|| map[stage_num][gate2_x+dirX][gate2_y+dirY] == 2 || gate2_x+dirX<0 ||gate2_y+dirY <0|| gate2_x+dirX >31||gate2_y+dirY>31)
+      if(gate2_x+dirX<0 ||gate2_y+dirY <0|| gate2_x+dirX >31||gate2_y+dirY>31){
+        direct++;
+        if(direct == 4)
+        {
+          direct = 0;
+        }
+        continue;
+      }
+      else if(map[stage_num][gate2_x+dirX][gate2_y+dirY] == 1|| map[stage_num][gate2_x+dirX][gate2_y+dirY] == 2)
       {
         direct++;
         if(direct == 4)
@@ -936,8 +943,16 @@ void Gate(int stage_num, int direct)
       direct %= 4;
       int dirX = direction[direct][0];
       int dirY = direction[direct][1];
+      if(gate1_x+dirX<0 ||gate1_y+dirY <0|| gate1_x+dirX >31||gate1_y+dirY>31){
+        direct++;
+        if(direct == 4)
+        {
+          direct = 0;
+        }
+        continue;
 
-      if(map[stage_num][gate1_x+dirX][gate1_y+dirY] == 1|| map[stage_num][gate1_x+dirX][gate1_y+dirY] == 2 || gate1_x+dirX<0 ||gate1_y+dirY <0|| gate1_x+dirX >31||gate1_y+dirY>31)
+      }
+      else if(map[stage_num][gate1_x+dirX][gate1_y+dirY] == 1|| map[stage_num][gate1_x+dirX][gate1_y+dirY] == 2 )
       {
         direct++;
         if(direct == 4)
