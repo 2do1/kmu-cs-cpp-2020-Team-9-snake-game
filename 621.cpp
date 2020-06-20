@@ -289,7 +289,7 @@ int main()
       mission_body_len+=2;
       Growth_Item+=2;
       //Poison_Item+=2;
-      numberOfgate+=2;
+      numberOfgate+=1;
       timeseconds+=20;
     }
     usleep(1000000);
@@ -586,7 +586,7 @@ void GrowthItem(int stage_num)
         break;
       }
     }
-    if(map[stage_num][growthY][growthX] == 1 ||map[stage_num][growthY][growthX] == 3)crush++;
+    if(map[stage_num][growthY][growthX] == 1 ||map[stage_num][growthY][growthX] == 2 ||map[stage_num][growthY][growthX] == 3)crush++;
 
     if(crush == 1)
     {
@@ -615,7 +615,7 @@ void PoisonItem(int stage_num)
         crush++;
         break;
       }
-      if(map[stage_num][poisonY][poisonX] == 1|| map[stage_num][poisonY][poisonX] == 3){crush++;}
+      if(map[stage_num][poisonY][poisonX] == 1|| map[stage_num][poisonY][poisonX] == 2 ||map[stage_num][poisonY][poisonX] == 3){crush++;}
     }
 
     if(crush == 1)
@@ -994,19 +994,24 @@ void Gate(int stage_num, int direct)
 }
 
 int HeadPosition(){
+  current_numberOfgate +=1;
   if( xo == gate1_x && yo == gate1_y){
     if( bodyX[1]==gate1_x-1 && bodyY[1]==gate1_y) return 0;  // 진행방향 오른쪽
     else if( bodyX[1]==gate1_x && bodyY[1]==gate1_y-1) return 1;   // 진행 방향 아래
     else if( bodyX[1]==gate1_x+1 && bodyY[1]==gate1_y) return 2;   // 진행 방향 왼쪽
     else if( bodyX[1]==gate1_x && bodyY[1]==gate1_y+1) return 3;   // 진행 방향 위쪽
-    else{ return -1;}
+    else{
+      current_numberOfgate -= 1;
+      return -1;}
   }
   else if( xo == gate2_x && yo == gate2_y){
     if( bodyX[1]==gate2_x-1 && bodyY[1]==gate2_y) return 4;  // 진행방향 오른쪽
     else if( bodyX[1]==gate2_x && bodyY[1]==gate2_y-1) return 5;   // 진행 방향 아래
     else if( bodyX[1]==gate2_x+1 && bodyY[1]==gate2_y) return 6;   // 진행 방향 왼쪽
     else if( bodyX[1]==gate2_x && bodyY[1]==gate2_y+1) return 7;   // 진행 방향 위쪽
-    else{ return -1;}
+    else{current_numberOfgate -= 1;
+      return -1;}
     }
-  else{return -1;}
+  else{current_numberOfgate -= 1;return -1;
+    }
 }
