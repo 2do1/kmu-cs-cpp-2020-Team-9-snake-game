@@ -520,12 +520,12 @@ void stage(int stage_num){ //1단계
 
       for(int k = 1; k<body_len; k++){
 
-        if(growthX == j && growthY == i){
-          mvwprintw(win1, i, j, "G");
+        if(growthX == j && growthY == i && map[stage_num][i][j] !=1 && map[stage_num][i][j] !=2){
+          mvwprintw(win1, i, j, "3");
         }
-        else if(poisonX == j && poisonY == i)
+        else if(poisonX == j && poisonY == i && map[stage_num][i][j] !=1 && map[stage_num][i][j] !=2)
         {
-          mvwprintw(win1, i, j, "P");
+          mvwprintw(win1, i, j, "4");
         }
         else if(bodyX[k] == j && bodyY[k] == i){
             mvwprintw(win1, i, j, "0");
