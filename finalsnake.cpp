@@ -469,7 +469,7 @@ void stage(int stage_num){
           mvwprintw(win1, i, j, "P");
         }
         else if(bodyX[k] == j && bodyY[k] == i){
-            mvwprintw(win1, i, j, "0");
+            mvwprintw(win1, i, j, "o");
         }
       }
     }
