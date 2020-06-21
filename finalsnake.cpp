@@ -461,10 +461,10 @@ void stage(int stage_num){
       if(map[stage_num][i][j] == 3 && current_timeseconds>=7.0){mvwprintw(win1, i,j, "X");}
 
       for(int k = 1; k<body_len; k++){
-        if(growthX == j && growthY == i){
+        if(growthX == j && growthY == i && map[stage_num][i][j] != 1 && map[stage_num][i][j] !=2 && map[stage_num][i][j] !=3){
           mvwprintw(win1, i, j, "G");
         }
-        else if(poisonX == j && poisonY == i)
+        else if(poisonX == j && poisonY == i && map[stage_num][i][j] != 1 && map[stage_num][i][j] !=2 && map[stage_num][i][j] !=3)
         {
           mvwprintw(win1, i, j, "P");
         }
